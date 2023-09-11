@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dinotrack.shared.Entities
+namespace Dinotrack.Shared.Entities
 {
-    public class Category
+    public class Brand
     {
         public int Id { get; set; }
 
