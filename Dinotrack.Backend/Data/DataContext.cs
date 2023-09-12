@@ -19,6 +19,8 @@ namespace Dinotrack.Backend.Data
 
         public DbSet<Reference> References { get; set; }
 
+        public DbSet<Workshop> Workshops { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,6 +29,7 @@ namespace Dinotrack.Backend.Data
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
             modelBuilder.Entity<State>().HasIndex(s => new { s.CountryId, s.Name }).IsUnique();
             modelBuilder.Entity<City>().HasIndex(c => new { c.StateId, c.Name }).IsUnique();
+            modelBuilder.Entity<Workshop>().HasIndex(w => w.Name).IsUnique();
         }
 
 
