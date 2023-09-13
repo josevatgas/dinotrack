@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinotrack.Shared", "Dinotra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinotrack.Backend", "Dinotrack.Backend\Dinotrack.Backend.csproj", "{9CEFD58C-1B1D-4229-95C3-11085E041DE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinotrack.Frontend", "Dinotrack.Frontend\Dinotrack.Frontend.csproj", "{62108D19-BA10-4C88-97B6-CC45BB669F2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinotrack.Frontend", "Dinotrack.Frontend\Dinotrack.Frontend.csproj", "{62108D19-BA10-4C88-97B6-CC45BB669F2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

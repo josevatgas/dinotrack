@@ -1,42 +1,42 @@
-﻿@page "/countries/edit/{Id:int}"
+﻿@page "/workshops/edit/{Id:int}"
 @inject NavigationManager navigationManager
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 
 
-<h3>Editar País</h3>
+<h3>Editar Taller</h3>
 
-@if (country is null)
+@if (workshop is null)
 {
     <Loading />
 }
 else
 {
-    <CountryForm @ref="countryForm" Country="country" OnValidSubmit="SaveAsync" ReturnAction="Return" />
+    <WorkshopForm @ref="workshopForm" Workshop="workshop" OnValidSubmit="SaveAsync" ReturnAction="Return" />
 }
 
 @code {
-    private Country? country;
-    private CountryForm? countryForm;
+    private Workshop? workshop;
+    private WorkshopForm? workshopForm;
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await repository.GetAsync<Country>($"api/countries/{Id}");
+        var response = await repository.GetAsync<Workshop>($"api/workshops/{Id}");
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        country = response.Response;
+        workshop = response.Response;
     }
 
     private async Task SaveAsync()
     {
-        var response = await repository.PutAsync($"/api/countries", country);
+        var response = await repository.PutAsync($"/api/workshops", workshop);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -51,11 +51,11 @@ else
                 ShowConfirmButton = false,
                 Timer = 3000,
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "País modificado exitosamente");
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Taller modificado exitosamente");
     }
     private void Return()
     {
-        countryForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo("/countries");
+        workshopForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/workshops");
     }
 }

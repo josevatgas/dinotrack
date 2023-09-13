@@ -17,14 +17,14 @@ namespace Dinotrack.Backend.Data
 
         public DbSet<Brand> Brands { get; set; }
 
-        public DbSet<Reference> References { get; set; }
+        public DbSet<Ref> Refs { get; set; }    
 
         public DbSet<Workshop> Workshops { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Reference>().HasIndex(r => new { r.BrandId, r.Name }).IsUnique();
+            modelBuilder.Entity<Ref>().HasIndex(r => new { r.BrandId, r.Name }).IsUnique();
             modelBuilder.Entity<Brand>().HasIndex(b => b.Name).IsUnique();
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
             modelBuilder.Entity<State>().HasIndex(s => new { s.CountryId, s.Name }).IsUnique();

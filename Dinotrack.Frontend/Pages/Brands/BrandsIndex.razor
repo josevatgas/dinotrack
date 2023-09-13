@@ -1,34 +1,34 @@
-﻿@page "/countries"
+﻿@page "/brands"
 @inject IRepository repository;
 @inject SweetAlertService sweetAlertService;
 
 
-<h3>Países</h3>
+<h3>Marcas</h3>
 <div class="d-grid gap-2 d-md-block">
-    <a class="btn btn-primary" role="button" href="/countries/create">Nuevo País</a>
+    <a class="btn btn-primary" role="button" href="/brands/create">Nueva Categoría</a>
 </div>
 
 
-<GenericList MyList="countries">
+<GenericList MyList="brands">
     <Body>
         <table class="table table-striped">
 
             <thead>
                 <tr>
-                    <th>País</th>
+                    <th>Marcas</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var country in countries!)
+                @foreach (var brand in brands!)
                 {
                     <tr>
                         <td>
-                            <a href="/countries/details/@country.Id">@country.Name</a>
+                            <a href="/brands/details/@brand.Id">@brand.Name</a>
                         </td>
                         <td>
-                            <a class="btn btn-warning btn-sm" href="/countries/edit/@country.Id">Editar</a>
-                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(country))>Borrar</button>
+                            <a class="btn btn-warning btn-sm" href="/brands/edit/@brand.Id">Editar</a>
+                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(brand))>Borrar</button>
                         </td>
 
                     </tr>
@@ -44,7 +44,7 @@
 
 @code {
 
-    public List<Country>? countries { get; set; }
+    public List<Brand>? brands { get; set; }
     public string? Error { get; set; }
 
 
@@ -55,21 +55,21 @@
 
     private async Task LoadRecordsAsync()
     {
-        var response = await repository.GetAsync<List<Country>>("/api/countries");
+        var response = await repository.GetAsync<List<Brand>>("/api/brands");
         if (response.Error)
         {
             Error = await response.GetErrorMessageAsync();
             return;
         }
-        countries = response.Response;
+        brands = response.Response;
 
     }
-    private async Task DeleteAsync(Country country)
+    private async Task DeleteAsync(Brand brand)
     {
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Esta seguro que quieres eliminar al país {country.Name}?",
+                Text = $"¿Esta seguro que quieres eliminar la marca {brand.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true
             });
@@ -81,7 +81,7 @@
             return;
         }
 
-        var response = await repository.DeleteAsync($"api/countries/{country.Id}");
+        var response = await repository.DeleteAsync($"api/brands/{brand.Id}");
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -97,6 +97,6 @@
                 ShowConfirmButton = false,
                 Timer = 3000
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "País eliminado exitosamente.");
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Marca eliminada exitosamente.");
     }
 }

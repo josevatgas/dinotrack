@@ -1,4 +1,4 @@
-﻿@page "/countries/create"
+﻿@page "/workshops/create"
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
@@ -6,15 +6,15 @@
 
 <h3>Crear País</h3>
 
-<CountryForm @ref="countryForm" Country="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<WorkshopForm @ref="workshopForm" Workshop="workshop" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
 
 @code {
-    private Country country = new();
-    private CountryForm? countryForm;
+    private Workshop workshop = new();
+    private WorkshopForm? workshopForm;
     private async Task CreateAsync()
     {
-        var response = await repository.PostAsync("/api/countries", country);
+        var response = await repository.PostAsync("/api/workshops", workshop);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -29,14 +29,14 @@
                 ShowConfirmButton = false,
                 Timer = 3000,
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "País creado exitosamente");
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Taller creado exitosamente");
 
     }
 
     private void Return()
     {
-        countryForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo("/countries");
+        workshopForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/workshops");
     }
 
 }

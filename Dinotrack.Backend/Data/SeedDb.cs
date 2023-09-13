@@ -27,19 +27,274 @@ namespace Dinotrack.Backend.Data
         {
             if (!_context.Brands.Any())
             {
-                _context.Brands.Add(new Brand { Name = "Suzuki" });
-                _context.Brands.Add(new Brand { Name = "Yamaha" });
-                _context.Brands.Add(new Brand { Name = "Honda" });
-                _context.Brands.Add(new Brand { Name = "Kawasaki" });
-                _context.Brands.Add(new Brand { Name = "BMW" });
-                _context.Brands.Add(new Brand { Name = "Ducati" });
-                _context.Brands.Add(new Brand { Name = "Triumph" });
-                _context.Brands.Add(new Brand { Name = "AKT" });
-                _context.Brands.Add(new Brand { Name = "Harley Davidson" });
-                _context.Brands.Add(new Brand { Name = "Kymico" });
-                _context.Brands.Add(new Brand { Name = "Bajaj " });
-                _context.Brands.Add(new Brand { Name = "TVS" });
-                _context.Brands.Add(new Brand { Name = "Victory" });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Suzuki",
+                    Refs = new List<Ref>() 
+                    {
+                        new Ref() { Name = "DR150"}, 
+                        new Ref() { Name = "V-STROM 250 SX"}, 
+                        new Ref() { Name = "GIXXER 150 ABS"}, 
+                        new Ref() { Name = "GIXXER 150 FI"}, 
+                        new Ref() { Name = "GIXXER SF 150 ABS"}, 
+                        new Ref() { Name = "GSX S150 ABS"}, 
+                        new Ref() { Name = "GSX-R150 ABS"}, 
+                        new Ref() { Name = "GIXXER 250"}, 
+                        new Ref() { Name = "GIXXER SF 250"}, 
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"}, 
+                        new Ref() { Name = "AX4 EURO 3"}, 
+                        new Ref() { Name = "GSXS 1000 GT"}, 
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Yamaha",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Honda",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Kawasaki",
+                    Refs = new List<Ref>() 
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "BMW",
+                    Refs = new List<Ref>() 
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Ducati",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Triumph",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "AKT",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Harley Davidson",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Kymico",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Bajaj",
+                    Refs = new List<Ref>() 
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }  
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "TVS",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                _context.Brands.Add(new Brand 
+                { 
+                    Name = "Victory",
+                    Refs = new List<Ref>()
+                    {
+                        new Ref() { Name = "DR150"},
+                        new Ref() { Name = "V-STROM 250 SX"},
+                        new Ref() { Name = "GIXXER 150 ABS"},
+                        new Ref() { Name = "GIXXER 150 FI"},
+                        new Ref() { Name = "GIXXER SF 150 ABS"},
+                        new Ref() { Name = "GSX S150 ABS"},
+                        new Ref() { Name = "GSX-R150 ABS"},
+                        new Ref() { Name = "GIXXER 250"},
+                        new Ref() { Name = "GIXXER SF 250"},
+                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "AX4 EURO 3"},
+                        new Ref() { Name = "GSXS 1000 GT"},
+                    }
+                });
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckWorkshopsAsync()
+        {
+            if (!_context.Workshops.Any())
+            {
+                _context.Workshops.Add(new Workshop { Name = "Taller la 45" });
+                _context.Workshops.Add(new Workshop { Name = "Yamaha Motors" });
+                _context.Workshops.Add(new Workshop { Name = "Taller Honda" });
+                _context.Workshops.Add(new Workshop { Name = "Concesionario Motoland" });
+                _context.Workshops.Add(new Workshop { Name = "Workshop BMW" });
+                _context.Workshops.Add(new Workshop { Name = "Ducati profesional shop" });
+                _context.Workshops.Add(new Workshop { Name = "Taller de motos XYZ" });
+                _context.Workshops.Add(new Workshop { Name = "Motos y Motos" });
+                _context.Workshops.Add(new Workshop { Name = "MotoPlus" });
+                _context.Workshops.Add(new Workshop { Name = "Susuki Motor" });
+                _context.Workshops.Add(new Workshop { Name = "Centro de servicios zulu" });
+                _context.Workshops.Add(new Workshop { Name = "Tallerama" });
+                _context.Workshops.Add(new Workshop { Name = "Todo en motos Medellín" });
                 await _context.SaveChangesAsync();
             }
         }

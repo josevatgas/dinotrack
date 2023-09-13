@@ -1,20 +1,20 @@
-﻿@page "/countries/create"
+﻿@page "/brands/create"
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
 
-<h3>Crear País</h3>
+<h3>Craer Marca</h3>
 
-<CountryForm @ref="countryForm" Country="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<BrandForm @ref="brandForm" Brand="brand" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
 
 @code {
-    private Country country = new();
-    private CountryForm? countryForm;
+    private Brand brand = new();
+    private BrandForm? brandForm;
     private async Task CreateAsync()
     {
-        var response = await repository.PostAsync("/api/countries", country);
+        var response = await repository.PostAsync("/api/brands", brand);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -29,14 +29,15 @@
                 ShowConfirmButton = false,
                 Timer = 3000,
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "País creado exitosamente");
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Marca creada exitosamente");
 
     }
 
     private void Return()
     {
-        countryForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo("/countries");
+        brandForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/brands");
     }
 
 }
+

@@ -3,6 +3,7 @@ using Dinotrack.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dinotrack.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230912213109_IncludeReferencesBrandFK")]
+    partial class IncludeReferencesBrandFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,8 +34,8 @@ namespace Dinotrack.Backend.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -87,7 +90,7 @@ namespace Dinotrack.Backend.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("Dinotrack.Shared.Entities.Ref", b =>
+            modelBuilder.Entity("Dinotrack.Shared.Entities.Reference", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,15 +103,15 @@ namespace Dinotrack.Backend.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId", "Name")
                         .IsUnique();
 
-                    b.ToTable("Refs");
+                    b.ToTable("References");
                 });
 
             modelBuilder.Entity("Dinotrack.Shared.Entities.State", b =>
@@ -167,10 +170,10 @@ namespace Dinotrack.Backend.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Dinotrack.Shared.Entities.Ref", b =>
+            modelBuilder.Entity("Dinotrack.Shared.Entities.Reference", b =>
                 {
                     b.HasOne("Dinotrack.Shared.Entities.Brand", "Brand")
-                        .WithMany("Refs")
+                        .WithMany("References")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -191,7 +194,7 @@ namespace Dinotrack.Backend.Migrations
 
             modelBuilder.Entity("Dinotrack.Shared.Entities.Brand", b =>
                 {
-                    b.Navigation("Refs");
+                    b.Navigation("References");
                 });
 
             modelBuilder.Entity("Dinotrack.Shared.Entities.Country", b =>
