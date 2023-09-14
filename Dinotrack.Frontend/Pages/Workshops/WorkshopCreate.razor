@@ -3,8 +3,8 @@
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
-
-<h3>Crear País</h3>
+<hr/>
+<h3>Crear Taller</h3>
 
 <WorkshopForm @ref="workshopForm" Workshop="workshop" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
@@ -27,7 +27,7 @@
                 Toast = true,
                 Position = SweetAlertPosition.TopRight,
                 ShowConfirmButton = false,
-                Timer = 3000,
+                Timer = 2000,
             });
         await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Taller creado exitosamente");
 

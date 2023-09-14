@@ -3,6 +3,7 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 
+<hr />
 <h3>Editar Estado</h3>
 
 @if (state is null)
@@ -50,9 +51,9 @@ else
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 2000
             });
         await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
     }

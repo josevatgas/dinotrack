@@ -1,25 +1,25 @@
-﻿@page "/states/create/{CountryId:int}"
+﻿@page "/refs/create/{BrandId:int}"
 @inject NavigationManager navigationManager
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 
-<h6>País: @country.Name</h6>
+<h6>Marca: @brand.Name</h6>
 <hr/>
-<h3>Crear Estado</h3>
+<h3>Crear Referencia</h3>
 
-<StateForm @ref="stateForm" State="state" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<RefForm @ref="refForm" Ref="refe" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
 @code {
-    private State state = new();
-    private StateForm? stateForm;
-    private Country country = new();
+    private Ref refe = new();
+    private RefForm? refForm;
 
     [Parameter]
-    public int CountryId { get; set; }
+    public int BrandId { get; set; }
+    public Brand brand = new();
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await repository.GetAsync<Country>($"/api/countries/{CountryId}");
+        var response = await repository.GetAsync<Brand>($"/api/brands/{BrandId}");
         if (response.Error)
         {
             if (response.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -30,13 +30,13 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        country = response.Response!;
+        brand = response.Response!;
     }
 
     private async Task CreateAsync()
     {
-        state.CountryId = CountryId;
-        var response = await repository.PostAsync("/api/states", state);
+        refe.BrandId = BrandId;
+        var response = await repository.PostAsync("/api/refs", refe);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -51,12 +51,12 @@
                 ShowConfirmButton = false,
                 Timer = 2000
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Estado creado exitosamente.");
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Referencia creada con éxito.");
     }
 
     private void Return()
     {
-        stateForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo($"/countries/details/{CountryId}");
+        refForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo($"/brands/details/{BrandId}");
     }
 }

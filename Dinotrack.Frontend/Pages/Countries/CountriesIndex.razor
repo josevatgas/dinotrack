@@ -2,12 +2,12 @@
 @inject IRepository repository;
 @inject SweetAlertService sweetAlertService;
 
-
-<h3>Países</h3>
+<hr/>
+<h3>Paises</h3>
+<hr/>
 <div class="d-grid gap-2 d-md-block">
     <a class="btn btn-primary" role="button" href="/countries/create">Nuevo País</a>
 </div>
-
 
 <GenericList MyList="countries">
     <Body>
@@ -95,7 +95,7 @@
                 Toast = true,
                 Position = SweetAlertPosition.TopRight,
                 ShowConfirmButton = false,
-                Timer = 3000
+                Timer = 2000
             });
         await toast.FireAsync(icon: SweetAlertIcon.Success, message: "País eliminado exitosamente.");
     }

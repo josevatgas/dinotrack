@@ -6,7 +6,7 @@
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Marca:</label>
+        <label>Marca</label>
         <div>
             <InputText class="form-control" @bind-Value="@Brand.Name" />
             <ValidationMessage For="@(() => Brand.Name)" />

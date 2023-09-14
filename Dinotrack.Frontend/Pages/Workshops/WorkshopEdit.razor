@@ -3,7 +3,7 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 
-
+<hr />
 <h3>Editar Taller</h3>
 
 @if (workshop is null)
@@ -49,7 +49,7 @@ else
                 Toast = true,
                 Position = SweetAlertPosition.TopRight,
                 ShowConfirmButton = false,
-                Timer = 3000,
+                Timer = 2000,
             });
         await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Taller modificado exitosamente");
     }

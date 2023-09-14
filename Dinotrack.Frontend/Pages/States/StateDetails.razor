@@ -79,7 +79,7 @@ else
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Realmente deseas eliminar la ciudad? {city.Name}",
+                Text = $"¿Realmente deseas eliminar la ciudad {city.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "No",
@@ -107,9 +107,9 @@ else
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 2000
             });
         await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
     }

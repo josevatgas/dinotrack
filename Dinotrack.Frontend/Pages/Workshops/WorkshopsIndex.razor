@@ -2,10 +2,11 @@
 @inject IRepository repository;
 @inject SweetAlertService sweetAlertService;
 
-
+<hr />
 <h3>Talleres</h3>
+<hr />
 <div class="d-grid gap-2 d-md-block">
-    <a class="btn btn-primary" role="button" href="/workshops/create">Nueva Categoría</a>
+    <a class="btn btn-primary" role="button" href="/workshops/create">Nuevo Taller</a>
 </div>
 
 
@@ -95,7 +96,7 @@
                 Toast = true,
                 Position = SweetAlertPosition.TopRight,
                 ShowConfirmButton = false,
-                Timer = 3000
+                Timer = 2000
             });
         await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Taller eliminado exitosamente.");
     }

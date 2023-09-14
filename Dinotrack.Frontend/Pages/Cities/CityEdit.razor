@@ -1,25 +1,30 @@
-﻿@page "/states/create/{CountryId:int}"
+﻿@page "/cities/edit/{CityId:int}"
 @inject NavigationManager navigationManager
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 
-<h6>País: @country.Name</h6>
-<hr/>
-<h3>Crear Estado</h3>
+<hr />
+<h3>Editar Ciudad</h3>
 
-<StateForm @ref="stateForm" State="state" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+@if (city is null)
+{
+    <Loading />
+}
+else
+{
+    <CityForm @ref="cityForm" City="city" OnValidSubmit="SaveAsync" ReturnAction="Return" />
+}
 
 @code {
-    private State state = new();
-    private StateForm? stateForm;
-    private Country country = new();
+    private City? city;
+    private CityForm? cityForm;
 
     [Parameter]
-    public int CountryId { get; set; }
+    public int CityId { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        var response = await repository.GetAsync<Country>($"/api/countries/{CountryId}");
+        var response = await repository.GetAsync<City>($"/api/cities/{CityId}");
         if (response.Error)
         {
             if (response.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -30,13 +35,12 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        country = response.Response!;
+        city = response.Response;
     }
 
-    private async Task CreateAsync()
+    private async Task SaveAsync()
     {
-        state.CountryId = CountryId;
-        var response = await repository.PostAsync("/api/states", state);
+        var response = await repository.PutAsync($"/api/cities", city);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -51,12 +55,12 @@
                 ShowConfirmButton = false,
                 Timer = 2000
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Estado creado exitosamente.");
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Ciudad modificada con éxito.");
     }
 
     private void Return()
     {
-        stateForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo($"/countries/details/{CountryId}");
+        cityForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo($"/states/details/{city!.StateId}");
     }
 }

@@ -3,7 +3,7 @@
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
-
+<hr />
 <h3>Crear País</h3>
 
 <CountryForm @ref="countryForm" Country="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />
@@ -27,7 +27,7 @@
                 Toast = true,
                 Position = SweetAlertPosition.TopRight,
                 ShowConfirmButton = false,
-                Timer = 3000,
+                Timer = 2000,
             });
         await toast.FireAsync(icon: SweetAlertIcon.Success, message: "País creado exitosamente");
 

@@ -1,25 +1,25 @@
-﻿@page "/states/create/{CountryId:int}"
+﻿@page "/cities/create/{StateId:int}"
 @inject NavigationManager navigationManager
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 
-<h6>País: @country.Name</h6>
+<h6>Estado: @state.Name</h6>
 <hr/>
-<h3>Crear Estado</h3>
+<h3>Crear Ciudad</h3>
 
-<StateForm @ref="stateForm" State="state" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<CityForm @ref="cityForm" City="city"  OnValidSubmit="CreateAsync" ReturnAction="Return"/>
 
 @code {
+    private City city = new();
+    private CityForm? cityForm;
     private State state = new();
-    private StateForm? stateForm;
-    private Country country = new();
 
     [Parameter]
-    public int CountryId { get; set; }
+    public int StateId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await repository.GetAsync<Country>($"/api/countries/{CountryId}");
+        var response = await repository.GetAsync<State>($"/api/states/{StateId}");
         if (response.Error)
         {
             if (response.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -30,13 +30,13 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        country = response.Response!;
+        state = response.Response!;
     }
 
     private async Task CreateAsync()
     {
-        state.CountryId = CountryId;
-        var response = await repository.PostAsync("/api/states", state);
+        city.StateId = StateId;
+        var response = await repository.PostAsync("/api/cities", city);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
@@ -51,12 +51,12 @@
                 ShowConfirmButton = false,
                 Timer = 2000
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Estado creado exitosamente.");
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Ciudad creada exitosamente.");
     }
 
     private void Return()
     {
-        stateForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo($"/countries/details/{CountryId}");
+        cityForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo($"/states/details/{StateId}");
     }
 }
