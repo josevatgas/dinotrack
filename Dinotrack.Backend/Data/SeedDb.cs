@@ -54,7 +54,7 @@ namespace Dinotrack.Backend.Data
                     Refs = new List<Ref>()
                     {
                         new Ref() { Name = "V80_2000"},
-                        new Ref() { Name = "V80_2000"},
+                        new Ref() { Name = "V80_2000-PRO"},
                         new Ref() { Name = "Axis_2001"},
                         new Ref() { Name = "BWS 100_2007"},
                         new Ref() { Name = "BWS 125_2012"},
@@ -91,18 +91,18 @@ namespace Dinotrack.Backend.Data
                     Name = "Kawasaki",
                     Refs = new List<Ref>() 
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "K-100"},
+                        new Ref() { Name = "K-150"},
+                        new Ref() { Name = "KW 200"},
+                        new Ref() { Name = "KW 400"},
+                        new Ref() { Name = "NAS 250"},
+                        new Ref() { Name = "RSX 350"},
+                        new Ref() { Name = "RX 600"},
+                        new Ref() { Name = "RX 1000"},
+                        new Ref() { Name = "RZ X-1000"},
+                        new Ref() { Name = "AX EURO PLUS"},
+                        new Ref() { Name = "ROAD PT 500"},
+                        new Ref() { Name = "GTRACK 1000 GT"},
                     }
                 });
                 _context.Brands.Add(new Brand 
@@ -110,18 +110,18 @@ namespace Dinotrack.Backend.Data
                     Name = "BMW",
                     Refs = new List<Ref>() 
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "BMW - 100"},
+                        new Ref() { Name = "BMW - 200"},
+                        new Ref() { Name = "BMW - 400"},
+                        new Ref() { Name = "BMW - 600"},
+                        new Ref() { Name = "BMW - 1000"},
+                        new Ref() { Name = "BMW - 1200"},
+                        new Ref() { Name = "BMW - 100 PRO"},
+                        new Ref() { Name = "BMW - 200 PRO"},
+                        new Ref() { Name = "BMW - 400 PRO"},
+                        new Ref() { Name = "BMW - 600 PRO"},
+                        new Ref() { Name = "BMW - 1000 PRO"},
+                        new Ref() { Name = "BMW - 1200 PRO"},
                     }
                 });
                 _context.Brands.Add(new Brand 
@@ -129,37 +129,36 @@ namespace Dinotrack.Backend.Data
                     Name = "Ducati",
                     Refs = new List<Ref>()
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
-                    }
-                });
+                        new Ref() { Name = "DUCATI-R1000"},
+                        new Ref() { Name = "DUCATI-R600 PRO"},
+                        new Ref() { Name = "DUCATI-R600"},
+                        new Ref() { Name = "DUCATI-R400 PRO"},
+                        new Ref() { Name = "DUCATI-R400"},
+                        new Ref() { Name = "DUCATI-R200 PRO"},
+                        new Ref() { Name = "DUCATI-R200"},
+                        new Ref() { Name = "DUCATI-R100 PRO"},
+                        new Ref() { Name = "DUCATI-R100"},
+                        new Ref() { Name = "DUCATI-R250 PRO"},
+                        new Ref() { Name = "DUCATI-R250"},
+                        new Ref() { Name = "DUCATI-R1"},
+                    }            });
                 _context.Brands.Add(new Brand 
                 { 
                     Name = "Triumph",
                     Refs = new List<Ref>()
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "TR - GT 1000 PRO" },
+                        new Ref() { Name = "TR - GT 1000" },
+                        new Ref() { Name = "TR - GT 800 PRO" },
+                        new Ref() { Name = "TR - GT 800" },
+                        new Ref() { Name = "TR - GT 600 PRO" },
+                        new Ref() { Name = "TR - GT 600" },
+                        new Ref() { Name = "TR - GT 400 PRO" },
+                        new Ref() { Name = "TR - GT 400" },
+                        new Ref() { Name = "TR - GT 200 PRO" },
+                        new Ref() { Name = "TR - GT 200" },
+                        new Ref() { Name = "TR - GT 10" },
+                        new Ref() { Name = "TR - GT 1" },
                     }
                 });
                 _context.Brands.Add(new Brand 
@@ -167,18 +166,18 @@ namespace Dinotrack.Backend.Data
                     Name = "AKT",
                     Refs = new List<Ref>()
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "AK-100 GT" },
+                        new Ref() { Name = "AK-200 LS" },
+                        new Ref() { Name = "AK-200 GT" },
+                        new Ref() { Name = "AK-400 LS" },
+                        new Ref() { Name = "AK-400 GT" },
+                        new Ref() { Name = "AK-600 LS" },
+                        new Ref() { Name = "AK-600 GT" },
+                        new Ref() { Name = "AK-1000 LS" },
+                        new Ref() { Name = "AK-1000 GT" },
+                        new Ref() { Name = "AK-125 GT" },
+                        new Ref() { Name = "AK-125 PRO" },
+                        new Ref() { Name = "AK-125 LS" },
                     }
                 });
                 _context.Brands.Add(new Brand 
@@ -186,18 +185,18 @@ namespace Dinotrack.Backend.Data
                     Name = "Harley Davidson",
                     Refs = new List<Ref>()
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "HD - 1600 GT" },
+                        new Ref() { Name = "HD - 1200 GT" },
+                        new Ref() { Name = "HD - 1000 GT" },
+                        new Ref() { Name = "HD - 900 GT" },
+                        new Ref() { Name = "HD - 800 GT" },
+                        new Ref() { Name = "HD - 700 GT" },
+                        new Ref() { Name = "HD - 600 GT" },
+                        new Ref() { Name = "HD - 500 GT" },
+                        new Ref() { Name = "HD - 400 GT" },
+                        new Ref() { Name = "HD - 300 GT" },
+                        new Ref() { Name = "HD - 200 GT" },
+                        new Ref() { Name = "HD - 100 GT" },
                     }
                 });
                 _context.Brands.Add(new Brand 
@@ -205,18 +204,18 @@ namespace Dinotrack.Backend.Data
                     Name = "Kymico",
                     Refs = new List<Ref>()
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "K-110 A" },
+                        new Ref() { Name = "K-110 B" },
+                        new Ref() { Name = "K-110 C" },
+                        new Ref() { Name = "K-110 D" },
+                        new Ref() { Name = "K-110 E" },
+                        new Ref() { Name = "K-110 F" },
+                        new Ref() { Name = "K-110 G" },
+                        new Ref() { Name = "K-110 H" },
+                        new Ref() { Name = "K-110 I" },
+                        new Ref() { Name = "K-110 J" },
+                        new Ref() { Name = "K-110 K" },
+                        new Ref() { Name = "K-110 L" },
                     }
                 });
                 _context.Brands.Add(new Brand 
@@ -224,18 +223,18 @@ namespace Dinotrack.Backend.Data
                     Name = "Bajaj",
                     Refs = new List<Ref>() 
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "B-DR150"},
+                        new Ref() { Name = "B-V-STROM 250 SX"},
+                        new Ref() { Name = "B-GIXXER 150 ABS"},
+                        new Ref() { Name = "B-GIXXER 150 FI"},
+                        new Ref() { Name = "B-GIXXER SF 150 S"},
+                        new Ref() { Name = "B-GSX S150 ABS"},
+                        new Ref() { Name = "B-GSX-R150 ABS"},
+                        new Ref() { Name = "B-GIXXER 250"},
+                        new Ref() { Name = "B-GIXXER SF 250"},
+                        new Ref() { Name = "B-AX4 EVOLUTION 3"},
+                        new Ref() { Name = "B-AX4 EURO 3"},
+                        new Ref() { Name = "B-GSXS 1000 GT"},
                     }  
                 });
                 _context.Brands.Add(new Brand 
@@ -243,18 +242,18 @@ namespace Dinotrack.Backend.Data
                     Name = "TVS",
                     Refs = new List<Ref>()
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "150 X"},
+                        new Ref() { Name = "STROM 250 SX"},
+                        new Ref() { Name = "XXER 150 ABS"},
+                        new Ref() { Name = "XXER 150 FI"},
+                        new Ref() { Name = "XXER SF 150 ABS"},
+                        new Ref() { Name = "X S150 ABS"},
+                        new Ref() { Name = "X-R150 ABS"},
+                        new Ref() { Name = "XXER 250"},
+                        new Ref() { Name = "XXER SF 250"},
+                        new Ref() { Name = "4 EVOLUTION EURO 3"},
+                        new Ref() { Name = "4 EURO 3"},
+                        new Ref() { Name = "XS 1000 GT"},
                     }
                 });
                 _context.Brands.Add(new Brand 
@@ -262,18 +261,18 @@ namespace Dinotrack.Backend.Data
                     Name = "Victory",
                     Refs = new List<Ref>()
                     {
-                        new Ref() { Name = "DR150"},
-                        new Ref() { Name = "V-STROM 250 SX"},
-                        new Ref() { Name = "GIXXER 150 ABS"},
-                        new Ref() { Name = "GIXXER 150 FI"},
-                        new Ref() { Name = "GIXXER SF 150 ABS"},
-                        new Ref() { Name = "GSX S150 ABS"},
-                        new Ref() { Name = "GSX-R150 ABS"},
-                        new Ref() { Name = "GIXXER 250"},
-                        new Ref() { Name = "GIXXER SF 250"},
-                        new Ref() { Name = "AX4 EVOLUTION EURO 3"},
-                        new Ref() { Name = "AX4 EURO 3"},
-                        new Ref() { Name = "GSXS 1000 GT"},
+                        new Ref() { Name = "V-DR150"},
+                        new Ref() { Name = "V-STROM S" },
+                        new Ref() { Name = "V-TRACK 1" },
+                        new Ref() { Name = "V-TRACK 2" },
+                        new Ref() { Name = "V-TRACK S" },
+                        new Ref() { Name = "V-GSX-S150" },
+                        new Ref() { Name = "V-GSX-R150" },
+                        new Ref() { Name = "V-GIXXER 2" },
+                        new Ref() { Name = "V-GIXXER S" },
+                        new Ref() { Name = "V-AX4 EVOL" },
+                        new Ref() { Name = "V-AX4 EURO" },
+                        new Ref() { Name = "V-GSXS 100" },
                     }
                 });
                 await _context.SaveChangesAsync();
