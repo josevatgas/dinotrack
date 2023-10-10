@@ -1,12 +1,20 @@
 ﻿@page "/"
 
 <PageTitle>DinoTrack</PageTitle>
-
-<h1 class="display-1 text-center" >Hello, Dino!</h1>
-<hr/>
-Bienvenido a nuestra App de alertas para mantenimientos preventivos! 
-<hr/>
-<div>
-    <p style="text-align:center;"><img src='https://i.postimg.cc/wx7WyX71/Dinotrack.gif' height="300" width="300" border='0' alt='Dinotrack' /></p>
-</div>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>Estas autenticado, @context.User.Identity?.Name</p>
+        <h1 class="display-1 text-center" >Hello, Dino!</h1>
+        <hr/>
+        Bienvenido a nuestra App de alertas para mantenimientos preventivos! 
+        <hr/> 
+        <div>
+            <p style="text-align:center;"><img src='https://i.postimg.cc/wx7WyX71/Dinotrack.gif' height="300" width="300" border='0' alt='Dinotrack' /></p>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <p>No estas autorizado</p>
+    </NotAuthorized>
+</AuthorizeView>
+   
 <SurveyPrompt Title="How is Blazor working for you?" />

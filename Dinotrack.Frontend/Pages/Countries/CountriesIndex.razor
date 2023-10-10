@@ -1,43 +1,64 @@
 ﻿@page "/countries"
 @inject IRepository repository;
 @inject SweetAlertService sweetAlertService;
+@attribute [Authorize(Roles = "Admin")]
 
-<hr/>
+<hr />
 <h3>Paises</h3>
-<hr/>
-<div class="d-grid gap-2 d-md-block">
-    <a class="btn btn-primary" role="button" href="/countries/create">Nuevo País</a>
+<hr />
+
+<div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+    <div class="d-grid gap-2 d-md-block">
+        <a class="btn btn-primary mx-2" role="button" href="/countries/create">Nuevo País</a>
+    </div>
+    <div class="mx-2">
+        <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar país..." @bind-value="Filter" />
+    </div>
+    <div>
+        <button type="button" class="btn btn-outline-primary" @onclick="ApplyFilterAsync">Filtrar</button>
+        <button type="button" class="btn btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
+    </div>
 </div>
+
 
 <GenericList MyList="countries">
     <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    RecNumber="recNumber"
+                    SelectedPage="SelectedPageAsync" />
+        <div style="display: flex; justify-content: flex-end; align-items: center;">
+            <span style="margin-right: 10px;">Registros por página</span>
+            <select class="form-select" style="width:80px"  @onchange="CountryChangedAsync">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
         <table class="table table-striped">
-
             <thead>
                 <tr>
-                    <th>País</th>
-                    <th></th>
+                    <th style="width:210px">País</th>
+                    <th style="width:90px">Estados</th>
+                    <th style="width:140px"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var country in countries!)
                 {
                     <tr>
-                        <td>
-                            <a href="/countries/details/@country.Id">@country.Name</a>
-                        </td>
+                        <td><a href="/countries/details/@country.Id">@country.Name</a></td>
+                        <td> @country.StatesNumber</td>
                         <td>
                             <a class="btn btn-warning btn-sm" href="/countries/edit/@country.Id">Editar</a>
                             <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(country))>Borrar</button>
                         </td>
-
                     </tr>
                 }
             </tbody>
         </table>
-
     </Body>
-
 </GenericList>
 
 
@@ -46,24 +67,110 @@
 
     public List<Country>? countries { get; set; }
     public string? Error { get; set; }
+    private int currentPage = 1;
+    private int totalPages;
+    private int recNumber = 10;
 
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Page { get; set; } = string.Empty;
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Filter { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadRecordsAsync();
     }
 
-    private async Task LoadRecordsAsync()
+    private async Task SelectedPageAsync((int page, int recNum) parameters)
     {
-        var response = await repository.GetAsync<List<Country>>("/api/countries");
+        currentPage = parameters.page;
+        recNumber = parameters.recNum;
+        await LoadRecordsAsync(parameters.page, parameters.recNum);
+    }
+
+    private async Task CountryChangedAsync(ChangeEventArgs e)
+    {
+        recNumber = Convert.ToInt32(e.Value!);
+        currentPage = 1;
+        await LoadRecordsAsync(1, recNumber);
+    }
+
+    private async Task LoadRecordsAsync(int page = 1, int recNum = 10)
+    {
+        if (!string.IsNullOrWhiteSpace(Page))
+        {
+            page = Convert.ToInt32(Page);
+        }
+
+        var ok = await LoadListAsync(page, recNum);
+        if (ok)
+        {
+            await LoadPagesAsync(recNum);
+        }
+    }
+
+    private async Task LoadPagesAsync(int recNumber = 10)
+    {
+        var url = string.Empty;
+        if (string.IsNullOrEmpty(Filter))
+        {
+            url = $"api/countries/totalPages?recordsNumber={recNumber}";
+        }
+        else
+        {
+            url = $"api/countries/totalPages?filter={Filter}&recordsNumber={recNumber}";
+        }
+
+        var response = await repository.GetAsync<int>(url);
         if (response.Error)
         {
-            Error = await response.GetErrorMessageAsync();
+            var message = await response.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        countries = response.Response;
-
+        totalPages = response.Response;
     }
+
+
+    private async Task<bool> LoadListAsync(int page, int recNumber)
+    {
+        var url = string.Empty;
+        if (string.IsNullOrEmpty(Filter))
+        {
+            url = $"api/countries?page={page}&recordsNumber={recNumber}";
+        }
+        else
+        {
+            url = $"api/countries?page={page}&filter={Filter}&recordsNumber={recNumber}";
+        }
+
+        var response = await repository.GetAsync<List<Country>>(url);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return false;
+        }
+        countries = response.Response;
+        return true;
+    }
+
+    private async Task CleanFilterAsync()
+    {
+        Filter = string.Empty;
+        await ApplyFilterAsync();
+    }
+
+    private async Task ApplyFilterAsync()
+    {
+        int page = 1;
+        await LoadRecordsAsync(page, recNumber);
+        await SelectedPageAsync((page, recNumber));
+    }
+
     private async Task DeleteAsync(Country country)
     {
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
@@ -89,7 +196,7 @@
             return;
         }
 
-        await LoadRecordsAsync();
+        await LoadRecordsAsync(currentPage, recNumber);
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

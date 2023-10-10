@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Dinotrack.Shared.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Dinotrack.Backend.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
+
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -31,9 +33,5 @@ namespace Dinotrack.Backend.Data
             modelBuilder.Entity<City>().HasIndex(c => new { c.StateId, c.Name }).IsUnique();
             modelBuilder.Entity<Workshop>().HasIndex(w => w.Name).IsUnique();
         }
-
-
-
-
     }   
 }
