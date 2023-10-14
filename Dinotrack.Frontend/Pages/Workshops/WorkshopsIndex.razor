@@ -3,63 +3,69 @@
 @inject SweetAlertService sweetAlertService;
 @attribute [Authorize(Roles = "Admin")]
 
-<hr />
-<h3>Talleres</h3>
-<hr />
-<div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
-    <div class="d-grid gap-2 d-md-block">
-        <a class="btn btn-primary  mx-2" role="button" href="/workshops/create">Nuevo Taller</a>
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <i class="oi oi-wrench"></i> Talleres
+        </span>
+        <div class="float-end">
+            <a class="btn btn-sm btn-primary" role="button" href="/workshops/create"><i class="oi oi-plus"></i> Nuevo Taller</a>
+        </div>
     </div>
-    <div class="mx-2">
-        <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar taller..." @bind-value="Filter" />
-    </div>
-    <div>
-        <button type="button" class="btn btn-outline-primary" @onclick="ApplyFilterAsync">Filtrar</button>
-        <button type="button" class="btn btn-outline-danger" @onclick="CleanFilterAsync">Limpiar</button>
+    <div class="card-body">
+        <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+            <div>
+                <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar taller..." @bind-value="Filter" />
+            </div>
+            <div class="mx-1">
+                <button type="button" class="btn btn-sm btn-outline-primary" @onclick="ApplyFilterAsync"><i class="oi oi-layers" /> Filtrar</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync"><i class="oi oi-ban" /> Limpiar</button>
+            </div>
+        </div>
+
+        <GenericList MyList="workshops">
+            <Body>
+                <Pagination CurrentPage="currentPage"
+                            TotalPages="totalPages"
+                            RecNumber="recNumber"
+                            SelectedPage="SelectedPageAsync" />
+                <div style="display: flex; justify-content: flex-end; align-items: center;">
+                    <span style="margin-right: 10px;">Registros por página</span>
+                    <select class="form-select" style="width:80px" @onchange="WorkshopChangedAsync">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Taller</th>
+                            <th style="width:168px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var workshop in workshops!)
+                        {
+                            <tr>
+                                <td>@workshop.Name</td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm" href="/workshops/edit/@workshop.Id"><i class="oi oi-layers" /> Editar</a>
+                                    <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(workshop))><i class="oi oi-ban" /> Borrar</button>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </Body>
+
+        </GenericList>
     </div>
 </div>
-
-<GenericList MyList="workshops">
-    <Body>
-        <Pagination CurrentPage="currentPage"
-                    TotalPages="totalPages"
-                    RecNumber="recNumber"
-                    SelectedPage="SelectedPageAsync" />
-        <div style="display: flex; justify-content: flex-end; align-items: center;">
-            <span style="margin-right: 10px;">Registros por página</span>
-            <select class="form-select" style="width:80px" @onchange="WorkshopChangedAsync">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th style="width:210px">Taller</th>
-                    <th style="width:140px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var workshop in workshops!)
-                {
-                    <tr>
-                        <td>@workshop.Name</td>
-                        <td>
-                            <a class="btn btn-warning btn-sm" href="/workshops/edit/@workshop.Id">Editar</a>
-                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(workshop))>Borrar</button>
-                        </td>
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-    </Body>
-
-</GenericList>
-
 
 
 @code {
@@ -100,7 +106,7 @@
 
     private async Task LoadRecordsAsync(int page = 1, int recNumber = 10)
     {
-        if(!string.IsNullOrEmpty(Page))
+        if (!string.IsNullOrEmpty(Page))
         {
             page = Convert.ToInt32(Page);
         }
@@ -116,7 +122,7 @@
     private async Task LoadPagesAsync(int recNumber = 10)
     {
         var url = string.Empty;
-        if(string.IsNullOrEmpty(Filter))
+        if (string.IsNullOrEmpty(Filter))
         {
             url = $"api/workshops/totalPages?recordsNumber={recNumber}";
         }
@@ -138,7 +144,7 @@
     private async Task<bool> LoadListAsync(int page, int recNumber)
     {
         var url = string.Empty;
-        if(string.IsNullOrEmpty(Filter))
+        if (string.IsNullOrEmpty(Filter))
         {
             url = $"api/workshops?page={page}&recordsNumber={recNumber}";
         }
@@ -160,7 +166,7 @@
 
     private async Task CleanFilterAsync()
     {
-        Filter = string.Empty;    
+        Filter = string.Empty;
         await ApplyFilterAsync();
     }
 

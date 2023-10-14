@@ -41,6 +41,16 @@ namespace Dinotrack.Backend.Controllers
                 .ToListAsync());
         }
 
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<ActionResult> GetCombo()
+        {
+            return Ok(await _context.Countries
+                .OrderBy(c => c.Name)
+                .ToListAsync());
+        }
+
+
         [HttpGet("totalPages")]
         public override async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
