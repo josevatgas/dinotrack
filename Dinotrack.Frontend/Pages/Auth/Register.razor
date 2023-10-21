@@ -5,6 +5,8 @@
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 
+
+
 <EditForm Model="userDTO" OnValidSubmit="CreteUserAsync">
     <DataAnnotationsValidator />
     <div class="card">
@@ -109,13 +111,6 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label>Foto:</label>
-                        <div>
-                            <InputText class="form-control" @bind-Value="@userDTO.Photo" />
-                            <ValidationMessage For="@(() => userDTO.Photo)" />
-                        </div>
-                    </div>
-                    <div class="mb-3">
                         <label>Contraseña:</label>
                         <div>
                             <InputText type="password" class="form-control" @bind-Value="@userDTO.Password" />
@@ -128,6 +123,9 @@
                             <InputText type="password" class="form-control" @bind-Value="@userDTO.PasswordConfirm" />
                             <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl"/>
                     </div>
                 </div>
             </div>
@@ -142,35 +140,51 @@
     private List<Country>? countries;
     private List<State>? states;
     private List<City>? cities;
+    private string? imageUrl;
+    private bool loading;
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public bool IsAdmin { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await LoadCountriesAsync();
+        if (!string.IsNullOrEmpty(userDTO.Photo))
+        {
+            imageUrl = userDTO.Photo;
+            userDTO.Photo = null;
+        }
+    }
+
+    private void ImageSelected(string imagenBase64)
+    {
+        userDTO.Photo = imagenBase64;
+        imageUrl = null;
+    }
+
+    private async Task LoadCountriesAsync()
+    {
+        loading = true;
+        var responseHttp = await repository.GetAsync<List<Country>>("/api/countries/combo");
+        if (responseHttp.Error)
+        {
+            loading = false;
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        countries = responseHttp.Response;
+        loading = false;
     }
 
     private async Task CountryChangedAsync(ChangeEventArgs e)
     {
         var selectedCountry = Convert.ToInt32(e.Value!);
+        states = null;
+        cities = null;
         await LoadStatesAsyn(selectedCountry);
-    }
-
-    private async Task StateChangedAsync(ChangeEventArgs e)
-    {
-        var selectedState = Convert.ToInt32(e.Value!);
-        await LoadCitiesAsyn(selectedState);
-    }
-
-    private async Task LoadCountriesAsync()
-    {
-        var responseHttp = await repository.GetAsync<List<Country>>("/api/countries/combo");
-        if (responseHttp.Error)
-        {
-            var message = await responseHttp.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-            return;
-        }
-
-        countries = responseHttp.Response;
+        userDTO.CityId = 0;
     }
 
     private async Task LoadStatesAsyn(int countryId)
@@ -184,6 +198,14 @@
         }
 
         states = responseHttp.Response;
+    }
+
+    private async Task StateChangedAsync(ChangeEventArgs e)
+    {
+        var selectedState = Convert.ToInt32(e.Value!);
+        cities = null;
+        await LoadCitiesAsyn(selectedState);
+        userDTO.CityId = 0;
     }
 
     private async Task LoadCitiesAsyn(int stateId)
@@ -201,17 +223,30 @@
 
     private async Task CreteUserAsync()
     {
+        loading = true;
         userDTO.UserName = userDTO.Email;
-        userDTO.UserType = UserType.User;
+
+        if (IsAdmin)
+        {
+            userDTO.UserType = UserType.Admin;
+        }
+        else
+        {
+            userDTO.UserType = UserType.User;
+        }
+
         var responseHttp = await repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
         if (responseHttp.Error)
         {
+            loading = false;
             var message = await responseHttp.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
 
+        loading = false;
         await loginService.LoginAsync(responseHttp.Response!.Token);
+        await sweetAlertService.FireAsync("Confirmación", "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
         navigationManager.NavigateTo("/");
     }
 }
