@@ -84,5 +84,11 @@ namespace Dinotrack.Frontend.Repositories
 
             return new HttpResponseWrapper<TResponse>(default, !response.IsSuccessStatusCode, response);
         }
+
+        public async Task<HttpResponseWrapper<object>> GetAsync(string url)
+        {
+            var responseHTTP = await _httpClient.GetAsync(url);
+            return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
+        }
     }
 }

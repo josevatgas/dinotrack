@@ -6,7 +6,7 @@
 @inject ILoginService loginService
 
 <div class="row">
-    <div class="col-md-4  offset-md-4">
+    <div class="col-md-6  offset-md-3">
 
         <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
             <DataAnnotationsValidator />
@@ -19,14 +19,14 @@
                 </div>
                 <div class="card-body">
 
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <label>Email:</label>
                         <div>
                             <InputText class="form-control" @bind-Value="@loginDTO.Email" />
                             <ValidationMessage For="@(() => loginDTO.Email)" />
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <label>Contraseña:</label>
                         <div>
                             <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
@@ -34,6 +34,10 @@
                         </div>
                     </div>
                     <button class="btn btn-sm btn-primary float-end" type="submit"><i class="oi oi-check" /> Iniciar Sesión</button>
+                </div>
+                <div class="card-footer">
+                    <p><a class="btn btn-link" href="/RecoverPassword">¿Has olvidado tu contraseña?</a></p>
+                    <a class="btn btn-link" href="/ResendToken">Reenviar correo de activación de cuenta</a>
                 </div>
             </div>
         </EditForm>
@@ -48,7 +52,27 @@
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            if (message!.Contains("El usuario no ha sido habilitado"))
+            {
+                var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Confirmación",
+                        Text = $"El usuario no ha sido habilitado, debes de seguir las instrucciones del correo enviado para poder habilitar el usuario.",
+                        Icon = SweetAlertIcon.Question,
+                        ShowCancelButton = true,
+                        CancelButtonText = "Cerrar",
+                        ConfirmButtonText = "Re-enviar correo de confirmación"
+                    });
+                var confirm = string.IsNullOrEmpty(result.Value);
+                if (!confirm)
+                {
+                    navigationManager.NavigateTo("/ResendToken");
+                }
+            }
+            else
+            {
+                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            }         
             return;
         }
 
