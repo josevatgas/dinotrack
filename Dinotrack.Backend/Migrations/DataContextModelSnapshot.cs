@@ -17,7 +17,7 @@ namespace Dinotrack.Backend.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -88,6 +88,42 @@ namespace Dinotrack.Backend.Migrations
                     b.ToTable("Countries");
                 });
 
+            modelBuilder.Entity("Dinotrack.Shared.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("NotificationState")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotificationType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("Dinotrack.Shared.Entities.Ref", b =>
                 {
                     b.Property<int>("Id")
@@ -97,6 +133,14 @@ namespace Dinotrack.Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Model")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -110,6 +154,28 @@ namespace Dinotrack.Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Refs");
+                });
+
+            modelBuilder.Entity("Dinotrack.Shared.Entities.RefImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RefId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RefId");
+
+                    b.ToTable("RefImages");
                 });
 
             modelBuilder.Entity("Dinotrack.Shared.Entities.State", b =>
@@ -397,6 +463,15 @@ namespace Dinotrack.Backend.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("Dinotrack.Shared.Entities.Notification", b =>
+                {
+                    b.HasOne("Dinotrack.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Dinotrack.Shared.Entities.Ref", b =>
                 {
                     b.HasOne("Dinotrack.Shared.Entities.Brand", "Brand")
@@ -406,6 +481,17 @@ namespace Dinotrack.Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("Dinotrack.Shared.Entities.RefImage", b =>
+                {
+                    b.HasOne("Dinotrack.Shared.Entities.Ref", "Ref")
+                        .WithMany("RefImages")
+                        .HasForeignKey("RefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ref");
                 });
 
             modelBuilder.Entity("Dinotrack.Shared.Entities.State", b =>
@@ -494,6 +580,11 @@ namespace Dinotrack.Backend.Migrations
             modelBuilder.Entity("Dinotrack.Shared.Entities.Country", b =>
                 {
                     b.Navigation("States");
+                });
+
+            modelBuilder.Entity("Dinotrack.Shared.Entities.Ref", b =>
+                {
+                    b.Navigation("RefImages");
                 });
 
             modelBuilder.Entity("Dinotrack.Shared.Entities.State", b =>

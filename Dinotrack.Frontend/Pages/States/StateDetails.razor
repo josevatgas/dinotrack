@@ -15,7 +15,7 @@ else
             <span>
                 <i class="oi oi-map-marker"></i> @state.Name
                 <a class="btn btn-sm btn-success mx-1 float-end" href="/countries/details/@state.CountryId"><i class="oi oi-action-undo"></i> Regresar</a>
-                <a class="btn btn-sm btn-primary  float-end" href="/cities/create/@state.Id"><i class="oi oi-plus"></i> Nueva Ciudad</a>
+                <a class="btn btn-sm btn-primary  float-end" @onclick=@(() => ShowModalAsync())><i class="oi oi-plus"></i> Nueva Ciudad</a>
 
             </span>
         </div>
@@ -62,7 +62,7 @@ else
                                         @city.Name
                                     </td>
                                     <td>
-                                        <a class="btn btn-warning btn-sm" href="/cities/edit/@city.Id"><i class="oi oi-pencil" /> Editar</a>
+                                        <a class="btn btn-warning btn-sm" @onclick=@(() => ShowModalAsync(city.Id, true))><i class="oi oi-pencil" /> Editar</a>
                                         <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(city))><i class="oi oi-trash" /> Borrar</button>
                                     </td>
                                 </tr>
@@ -82,6 +82,9 @@ else
     private int totalPages;
     private int recNumber = 10;
 
+    [CascadingParameter]
+    IModalService Modal { get; set; } = default!;
+
     [Parameter]
     public int StateId { get; set; }
 
@@ -97,6 +100,26 @@ else
     protected override async Task OnInitializedAsync()
     {
         await LoadRecordsAsync();
+    }
+
+    private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+    {
+        IModalReference modalReference;
+
+        if (isEdit)
+        {
+            modalReference = Modal.Show<CityEdit>(string.Empty, new ModalParameters().Add("CityId", id));
+        }
+        else
+        {
+            modalReference = Modal.Show<CityCreate>(string.Empty, new ModalParameters().Add("StateId", StateId));
+        }
+
+        var result = await modalReference.Result;
+        if (result.Confirmed)
+        {
+            await LoadRecordsAsync();
+        }
     }
 
     private async Task SelectedPageAsync((int page, int recNum) parameters)

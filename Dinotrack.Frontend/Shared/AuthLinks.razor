@@ -1,25 +1,45 @@
-﻿<AuthorizeView>
+﻿@using Dinotrack.Frontend.Pages.Auth;
+@inject IRepository repository
+
+<AuthorizeView>
     <Authorized>
-        <span class="d-flex align-items-center">Hola, <a href="EditUser" class="nav-link btn btn-link">@context.User.Identity!.Name</a></span>
+        <span class="d-flex align-items-center">Hola,<a href="EditUser" class="nav-link btn btn-link" style="margin-left: -12px;">@(char.ToUpper(context.User.Identity!.Name![0]) + context.User.Identity!.Name.Substring(1, context.User.Identity!.Name.IndexOf('@') - 1))</a></span>
         @if (!string.IsNullOrEmpty(photoUser))
         {
             <div class="mx-2">
-                <img src="@photoUser" width="50" height="50" style="border-radius:50%" />
+                <a href="EditUser"><img src="@photoUser" href="EditUser" width="50" height="50" style="border-radius:50%" /></a>
             </div>
         }
+        <a href="Notifications">
+            @if (alertCount > 0)
+            {
+                <iconify-icon icon="bi:envelope-exclamation" style="color: red;" width="35"></iconify-icon>
+            }
+            else
+            {
+                <iconify-icon icon="bi:envelope-check" width="35"></iconify-icon>
+            }
+            
+            
+        </a>
         <a href="Logout" class="nav-link btn btn-link">Cerrar Sesión</a>
+
     </Authorized>
     <NotAuthorized>
-        <a href="Register" class="nav-link btn btn-link">Registro</a>
-        <a href="Login" class="nav-link btn btn-link">Iniciar Sesión</a>
+        <a href="Register" class="nav-link btn btn-link m-3">Registro</a>
+        <a @onclick=@(() => ShowModalAsync()) class="nav-link btn btn-link m-3">Iniciar Sesión</a>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
     private string? photoUser;
+    private int? alertCount;
 
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
+
+    [CascadingParameter]
+    IModalService Modal { get; set; } = default!;
 
     protected async override Task OnParametersSetAsync()
     {
@@ -30,7 +50,14 @@
         {
             photoUser = photoClaim.Value;
         }
+        var response = await repository.GetAsync<int>($"/api/notifications/count");
+        alertCount = response.Response;
     }
+    private void ShowModalAsync()
+    {
+        Modal.Show<Login>();
+    }
+
 }
 
 

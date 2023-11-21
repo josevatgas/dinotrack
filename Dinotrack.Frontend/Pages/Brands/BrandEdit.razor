@@ -4,7 +4,6 @@
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-<hr/>
 <h3>Editar Marca</h3>
 
 @if (brand is null)
@@ -19,6 +18,9 @@ else
 @code {
     private Brand? brand;
     private BrandForm? brandForm;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
     [Parameter]
     public int Id { get; set; }
@@ -44,7 +46,10 @@ else
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
+
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

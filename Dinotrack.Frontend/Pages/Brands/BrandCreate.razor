@@ -4,7 +4,6 @@
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-<hr/>
 <h3>Crear Marca</h3>
 
 <BrandForm @ref="brandForm" Brand="brand" OnValidSubmit="CreateAsync" ReturnAction="Return" />
@@ -13,6 +12,11 @@
 @code {
     private Brand brand = new();
     private BrandForm? brandForm;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+
     private async Task CreateAsync()
     {
         var response = await repository.PostAsync("/api/brands", brand);
@@ -22,7 +26,10 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
+
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

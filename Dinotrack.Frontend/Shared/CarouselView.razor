@@ -1,0 +1,33 @@
+﻿<div class="my-2">
+    <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+        @foreach (var image in Images)
+        {
+            <MudCarouselItem Transition="transition" Color="@Color.Primary">
+                <div class="d-flex" style="height:90%; justify-content:center">
+                    @if (image.StartsWith("https://"))
+                    {
+                        <img src="@image" style="max-height: 180px; max-width: 100%;" />
+                    }
+                    else
+                    {
+                        var imageBase64 = $"data:image/png;base64,{image}";
+                        <div class="marca-nueva">Nueva</div>  
+                        <img src="@imageBase64" style="max-height: 180px; max-width: 100%;" />
+                    }
+                </div>
+            </MudCarouselItem>
+        }
+    </MudCarousel>
+</div>
+
+@code {
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+
+    [EditorRequired]
+    [Parameter]
+    public List<string> Images { get; set; } = null!;
+}

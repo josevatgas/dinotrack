@@ -3,7 +3,6 @@ using Dinotrack.Backend.Interfaces;
 using Dinotrack.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Dinotrack.Backend.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -112,4 +111,3 @@ namespace Dinotrack.Backend.Repositories
         }
     }
 }
-

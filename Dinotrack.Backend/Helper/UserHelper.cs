@@ -4,7 +4,6 @@ using Dinotrack.Shared.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Dinotrack.Backend.Helper
 {
     public class UserHelper : IUserHelper
@@ -84,11 +83,11 @@ namespace Dinotrack.Backend.Helper
             return await _userManager.UpdateAsync(user);
         }
 
-
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
             return await _userManager.IsInRoleAsync(user, roleName);
         }
+
         public async Task<SignInResult> LoginAsync(LoginDTO model)
         {
             return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
@@ -108,6 +107,5 @@ namespace Dinotrack.Backend.Helper
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
-
     }
 }

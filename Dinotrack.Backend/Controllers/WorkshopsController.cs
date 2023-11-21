@@ -21,6 +21,7 @@ namespace Dinotrack.Backend.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
@@ -36,7 +37,6 @@ namespace Dinotrack.Backend.Controllers
                 .ToListAsync());
         }
 
-
         [HttpGet("totalPages")]
         public override async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
@@ -50,7 +50,5 @@ namespace Dinotrack.Backend.Controllers
             double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
             return Ok(totalPages);
         }
-
-
     }
 }

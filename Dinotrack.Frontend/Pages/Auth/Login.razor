@@ -6,7 +6,7 @@
 @inject ILoginService loginService
 
 <div class="row">
-    <div class="col-md-6  offset-md-3">
+    <div class="col-md-12">
 
         <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
             <DataAnnotationsValidator />
@@ -33,11 +33,13 @@
                             <ValidationMessage For="@(() => loginDTO.Password)" />
                         </div>
                     </div>
-                    <button class="btn btn-sm btn-primary float-end" type="submit"><i class="oi oi-check" /> Iniciar Sesión</button>
+                    <button class="btn btn-sm btn-primary float-end" @onclick=@(() => LoginAsync())><i class="oi oi-check" /> Iniciar Sesión</button>
+                    <button class="btn btn-sm mx-1 btn-danger float-end" @onclick=@(() => CloseModalAsync())><i class="oi oi-ban" /> Cancelar</button>
                 </div>
                 <div class="card-footer">
-                    <p><a class="btn btn-link" href="/RecoverPassword">¿Has olvidado tu contraseña?</a></p>
-                    <a class="btn btn-link" href="/ResendToken">Reenviar correo de activación de cuenta</a>
+                    <p><a class="btn-sm btn-link" href="/Register">¿No eres usuario aún? Resgitrate aquí</a></p>
+                    <p><a class="btn-sm btn-link" href="/RecoverPassword">¿Has olvidado tu contraseña?</a></p>
+                    <a class="btn-sm btn-link" href="/ResendToken">Reenviar correo de activación de cuenta</a>
                 </div>
             </div>
         </EditForm>
@@ -45,9 +47,19 @@
 </div>
 @code {
     private LoginDTO loginDTO = new();
+    private bool wasClose;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
     private async Task LoginAsync()
     {
+        if (wasClose)
+        {
+            navigationManager.NavigateTo("/");
+            return;
+        }
+
         var responseHttp = await repository.PostAsync<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
         if (responseHttp.Error)
         {
@@ -79,4 +91,11 @@
         await loginService.LoginAsync(responseHttp.Response!.Token);
         navigationManager.NavigateTo("/");
     }
+
+    private async Task CloseModalAsync()
+    {
+        wasClose = true;
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
+    }
+
 }

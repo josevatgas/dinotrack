@@ -17,7 +17,7 @@ namespace Dinotrack.Backend.Controllers
     {
         private readonly DataContext _context;
 
-        public CitiesController(IGenericUnitOfWork<City> unitOfWork, DataContext context) : base(unitOfWork, context) 
+        public CitiesController(IGenericUnitOfWork<City> unitOfWork, DataContext context) : base(unitOfWork, context)
         {
             _context = context;
         }
@@ -50,7 +50,6 @@ namespace Dinotrack.Backend.Controllers
                 .ToListAsync());
         }
 
-
         [HttpGet("totalPages")]
         public override async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
@@ -68,6 +67,4 @@ namespace Dinotrack.Backend.Controllers
             return Ok(totalPages);
         }
     }
-
 }
-

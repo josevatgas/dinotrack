@@ -39,12 +39,20 @@
             </NavLink>
             @if (expandSubNav)
             {
-                <NavLink class="nav-link" href="/prog-alerts" style="padding-left:35px;">
-                    <span class="oi oi-clock" aria-hidden="true"></span>Alertas programadas
-                </NavLink>
-                <NavLink class="nav-link" href="/route-alerts" style="padding-left:35px;">
-                    <span class="oi oi-pulse" aria-hidden="true"></span>Alertas de ruta
-                </NavLink>
+                <AuthorizeView Roles="User">
+                    <Authorized>
+                        <NavLink class="nav-link" href="/notifications" style="padding-left:35px;">
+                            <span class="oi oi-clock" aria-hidden="true"></span>Alertas programadas
+                        </NavLink>
+                    </Authorized>
+                </AuthorizeView>
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <NavLink class="nav-link" href="/sendnotifications" style="padding-left:35px;">
+                            <span class="oi oi-pulse" aria-hidden="true"></span>Enviar Alertas
+                        </NavLink>
+                    </Authorized>
+                </AuthorizeView>
             }
 
         </div>

@@ -4,9 +4,7 @@
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-<h6>País: @country.Name</h6>
-<hr/>
-<h3>Crear Estado</h3>
+<h3>Crear Nuevo Estado</h3>
 
 <StateForm @ref="stateForm" State="state" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
@@ -14,6 +12,9 @@
     private State state = new();
     private StateForm? stateForm;
     private Country country = new();
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
     [Parameter]
     public int CountryId { get; set; }
@@ -44,7 +45,10 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
+
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

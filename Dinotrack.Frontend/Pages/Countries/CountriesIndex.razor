@@ -7,7 +7,7 @@
     <div class="card-header">
         <span>
             <i class="oi oi-globe"></i> Países
-            <a class="btn btn-sm btn-primary float-end" href="/countries/create"><i class="oi oi-plus"></i> Adicionar País</a>
+            <a class="btn btn-sm btn-primary float-end" @onclick=@(() => ShowModalAsync())><i class="oi oi-plus"></i> Adicionar País</a>
         </span>
     </div>
     <div class="card-body">
@@ -53,7 +53,7 @@
                                 <td><a href="/countries/details/@country.Id">@country.Name</a></td>
                                 <td> @country.StatesNumber</td>
                                 <td>
-                                    <a class="btn btn-warning btn-sm" href="/countries/edit/@country.Id"><i class="oi oi-pencil" /> Editar</a>
+                                    <a class="btn btn-warning btn-sm" @onclick=@(() => ShowModalAsync(country.Id, true))><i class="oi oi-pencil" /> Editar</a>
                                     <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(country))><i class="oi oi-trash" /> Borrar</button>
                                 </td>
                             </tr>
@@ -75,6 +75,9 @@
     private int totalPages;
     private int recNumber = 10;
 
+    [CascadingParameter]
+    IModalService Modal { get; set; } = default!;
+
     [Parameter]
     [SupplyParameterFromQuery]
     public string Page { get; set; } = string.Empty;
@@ -86,6 +89,26 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadRecordsAsync();
+    }
+
+    private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+    {
+        IModalReference modalReference;
+
+        if (isEdit)
+        {
+            modalReference = Modal.Show<CountryEdit>(string.Empty, new ModalParameters().Add("Id", id));
+        }
+        else
+        {
+            modalReference = Modal.Show<CountryCreate>();
+        }
+
+        var result = await modalReference.Result;
+        if (result.Confirmed)
+        {
+            await LoadRecordsAsync();
+        }
     }
 
     private async Task SelectedPageAsync((int page, int recNum) parameters)

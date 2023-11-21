@@ -22,7 +22,7 @@ namespace Dinotrack.Frontend.AuthorizationProviders
             _anonimous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
-        public async override Task<AuthenticationState> GetAuthenticationStateAsync()
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var token = await _jSRuntime.GetLocalStorage(_tokenKey);
             if (token is null)
@@ -59,7 +59,6 @@ namespace Dinotrack.Frontend.AuthorizationProviders
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var unserializedToken = jwtSecurityTokenHandler.ReadJwtToken(token);
             return unserializedToken.Claims;
-
-        } 
+        }
     }
 }

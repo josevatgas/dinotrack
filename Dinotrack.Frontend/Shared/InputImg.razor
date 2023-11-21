@@ -9,8 +9,8 @@
     @if (imageBase64 is not null)
     {
         <div>
-            <div style="margin: 10px">
-                <img src="data:image/jpeg;base64, @imageBase64" width="200" height="270" />
+            <div style="text-align: center; margin: 15px">
+                <img src="data:image/jpeg;base64, @imageBase64" style="max-width: 200px; height: auto;"/>
             </div>
         </div>
     }
@@ -18,8 +18,8 @@
     @if (ImageURL is not null)
     {
         <div>
-            <div style="margin: 10px">
-                <img src="@ImageURL" width="200" height="270" />
+            <div style="margin: 15px">
+                <img src="@ImageURL" style="max-width: 200px; height: auto;" />
             </div>
         </div>
     }

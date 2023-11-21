@@ -10,7 +10,7 @@
             <i class="oi oi-wrench"></i> Talleres
         </span>
         <div class="float-end">
-            <a class="btn btn-sm btn-primary" role="button" href="/workshops/create"><i class="oi oi-plus"></i> Nuevo Taller</a>
+            <a class="btn btn-sm btn-primary" role="button" @onclick=@(() => ShowModalAsync())><i class="oi oi-plus"></i> Nuevo Taller</a>
         </div>
     </div>
     <div class="card-body">
@@ -52,7 +52,7 @@
                             <tr>
                                 <td>@workshop.Name</td>
                                 <td>
-                                    <a class="btn btn-warning btn-sm" href="/workshops/edit/@workshop.Id"><i class="oi oi-layers" /> Editar</a>
+                                    <a class="btn btn-warning btn-sm" @onclick=@(() => ShowModalAsync(workshop.Id, true))><i class="oi oi-layers" /> Editar</a>
                                     <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(workshop))><i class="oi oi-ban" /> Borrar</button>
                                 </td>
 
@@ -76,6 +76,9 @@
     private int totalPages;
     private int recNumber = 10;
 
+    [CascadingParameter]
+    IModalService Modal { get; set; } = default!;
+
     [Parameter]
     [SupplyParameterFromQuery]
     public string Page { get; set; } = string.Empty;
@@ -89,6 +92,27 @@
     {
         await LoadRecordsAsync();
     }
+
+    private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+    {
+        IModalReference modalReference;
+
+        if (isEdit)
+        {
+            modalReference = Modal.Show<WorkshopEdit>(string.Empty, new ModalParameters().Add("Id", id));
+        }
+        else
+        {
+            modalReference = Modal.Show<WorkshopCreate>();
+        }
+
+        var result = await modalReference.Result;
+        if (result.Confirmed)
+        {
+            await LoadRecordsAsync();
+        }
+    }
+
 
     private async Task SelectedPageAsync((int page, int recNum) parameters)
     {

@@ -47,4 +47,3 @@ namespace Dinotrack.Frontend.Repositories
         }
     }
 }
-

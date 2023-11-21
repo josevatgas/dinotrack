@@ -16,7 +16,7 @@ else
         </span>
         <div class="float-end">
             <a class="btn btn-sm btn-success" href="/brands"><i class="oi oi-action-undo"></i> Regresar</a>
-            <a class="btn btn-sm btn-primary" href="/refs/create/@brand.Id"><i class="oi oi-plus"></i> Nueva Referencia</a>
+            <a class="btn btn-sm btn-primary" @onclick=@(() => ShowModalAsync())><i class="oi oi-plus"></i> Nueva Referencia</a>
         </div>
 
         <div class="card-body">
@@ -49,7 +49,10 @@ else
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th style="width:90">Referencia</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Modelo</th>
+                                <th>Imagen</th>
                                 <th style="width:168px"></th>
                             </tr>
                         </thead>
@@ -61,7 +64,16 @@ else
                                         @refe.Name
                                     </td>
                                     <td>
-                                        <a class="btn btn-warning btn-sm" href="/refs/edit/@refe.Id"><i class="oi oi-pencil" /> Editar</a>
+                                        @refe.Description
+                                    </td>
+                                    <td>
+                                        @refe.Model
+                                    </td>
+                                    <td>
+                                        <img src="@refe.MainImage" style="width:80px; height:auto;" />
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-warning btn-sm" @onclick=@(() => ShowModalAsync(refe.Id, true))><i class="oi oi-pencil" /> Editar</a>
                                         <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(refe))><i class="oi oi-trash" /> Borrar</button>
                                     </td>
                                 </tr>
@@ -81,6 +93,9 @@ else
     private int totalPages;
     private int recNumber = 10;
 
+    [CascadingParameter]
+    IModalService Modal { get; set; } = default!;
+
     [Parameter]
     public int BrandId { get; set; }
 
@@ -97,6 +112,26 @@ else
     protected override async Task OnInitializedAsync()
     {
         await LoadRecordsAsync();
+    }
+
+    private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+    {
+        IModalReference modalReference;
+
+        if (isEdit)
+        {
+            modalReference = Modal.Show<RefEdit>(string.Empty, new ModalParameters().Add("RefId", id));
+        }
+        else
+        {
+            modalReference = Modal.Show<RefCreate>(string.Empty, new ModalParameters().Add("BrandId", BrandId));
+        }
+
+        var result = await modalReference.Result;
+        if (result.Confirmed)
+        {
+            await LoadRecordsAsync();
+        }
     }
 
     private async Task SelectedPageAsync((int page, int recNum) parameters)

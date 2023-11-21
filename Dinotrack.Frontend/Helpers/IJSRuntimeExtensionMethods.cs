@@ -19,5 +19,4 @@ namespace Dinotrack.Frontend.Helpers
             return js.InvokeAsync<object>("localStorage.removeItem", key);
         }
     }
-
 }

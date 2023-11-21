@@ -4,21 +4,29 @@
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-<hr />
 <h3>Editar Referencia</h3>
 
-@if (refe is null)
+@if (loading)
 {
     <Loading />
 }
 else
 {
-    <RefForm @ref="refForm" Ref="refe" OnValidSubmit="SaveAsync" ReturnAction="Return" />
+    <RefForm @ref="refForm" RefDTO="refDTO" OnValidSubmit="SaveAsync" ReturnAction="Return" IsEdit=true
+             AddImageAction="AddImageAsync" RemoveImageAction="RemoveImageAsyc" />
 }
 
 @code {
-    private Ref? refe;
+    private RefDTO refDTO = new RefDTO
+    {
+        RefImages = new List<String>()
+    };
     private RefForm? refForm;
+    private bool loading = true;
+    private Ref? refe;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
     [Parameter]
     public int RefId { get; set; }
@@ -36,19 +44,102 @@ else
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        refe = response.Response;
+        refe = response.Response!;
+        refDTO = ToRefDTO(refe);
+        loading = false;
+
     }
 
-    private async Task SaveAsync()
+    private async Task AddImageAsync()
     {
-        var response = await repository.PutAsync($"/api/refs", refe);
+        if (refDTO.RefImages is null || refDTO.RefImages.Count == 0)
+        {
+            return;
+        }
+
+        var imageDTO = new ImageDTO
+            {
+                RefId = RefId,
+                Images = refDTO.RefImages!
+            };
+
+        var response = await repository.PostAsync<ImageDTO, ImageDTO>("/api/refs/addImages", imageDTO);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        refDTO.RefImages = response.Response!.Images;
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 5000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Imagenes agregadas con éxito.");
+    }
+
+    private async Task RemoveImageAsyc()
+    {
+        if (refDTO.RefImages is null || refDTO.RefImages.Count == 0)
+        {
+            return;
+        }
+
+        var imageDTO = new ImageDTO
+            {
+                RefId = RefId,
+                Images = refDTO.RefImages!
+            };
+
+        var response = await repository.PostAsync<ImageDTO, ImageDTO>("/api/refs/removeImage", imageDTO);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        refDTO.RefImages = response.Response!.Images;
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 5000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Imagén eliminada con éxito.");
+    }
+
+    private RefDTO ToRefDTO(Ref refe)
+    {
+        return new RefDTO
+            {
+                Description = refe.Description,
+                Id = refe.Id,
+                Name = refe.Name,
+                Model = refe.Model,
+                BrandId = refe.BrandId,
+                RefImages = refe.RefImages!.Select(x => x.Image).ToList()
+            };
+    }
+
+    private async Task SaveAsync()
+    {
+        var response = await repository.PutAsync($"/api/refs/full", refDTO);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
+
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

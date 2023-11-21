@@ -23,7 +23,6 @@ builder.Services
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sales Backend", Version = "v1" });
@@ -75,7 +74,6 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     x.Lockout.MaxFailedAccessAttempts = 3;
     x.Lockout.AllowedForNewUsers = true;
-
 })
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
@@ -95,7 +93,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddScoped<IFileStorage, FileStorage>();
 builder.Services.AddScoped<IMailHelper, MailHelper>();
 
-
 var app = builder.Build();
 
 SeedData(app);
@@ -109,7 +106,6 @@ void SeedData(WebApplication app)
         service!.SeedAsync().Wait();
     }
 }
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -128,6 +124,5 @@ app.UseCors(x => x
     .AllowAnyHeader()
     .SetIsOriginAllowed(origin => true)
     .AllowCredentials());
-
 
 app.Run();

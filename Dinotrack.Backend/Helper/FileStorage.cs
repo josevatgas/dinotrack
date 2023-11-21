@@ -37,5 +37,4 @@ namespace Dinotrack.Backend.Helper
             return blob.Uri.ToString();
         }
     }
-
 }

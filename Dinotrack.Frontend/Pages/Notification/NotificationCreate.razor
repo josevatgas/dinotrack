@@ -1,0 +1,50 @@
+﻿@page "/notifications/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin, User")]
+
+
+<NotificationForm @ref="notificationForm" Notification="notification" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+
+
+@code {
+    private Notification notification = new();
+    private NotificationForm? notificationForm;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private async Task CreateAsync()
+    {
+        var user = await repository.GetAsync<User>($"/api/accounts");
+        notification.UserId = user.Response!.Id;
+        var response = await repository.PostAsync("/api/notifications", notification);
+        if (response.Error)
+        {
+            var message = await response.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
+        Return();
+
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 2000,
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Alerta programada exitosamente");
+
+    }
+
+    private void Return()
+    {
+        notificationForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/notifications");
+    }
+
+}

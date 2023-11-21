@@ -1,0 +1,108 @@
+﻿@inject SweetAlertService sweetAlertService
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <label>Alerta</label>
+
+                <div class="m-1">
+                    <select class="form-control" @bind="@Notification.NotificationType">
+                        @foreach (var enumValue in Enum.GetValues(typeof(NotificationTypeEnum)))
+                        {
+                            <option value="@enumValue">@enumValue</option>
+                        }
+                    </select>
+                    <ValidationMessage For="@(() => Notification.NotificationType)" />
+                </div>
+                <label>Mensaje personalizado</label>
+                <div class="m-1">
+                    <InputTextArea class="form-control" rows="4" @bind-Value="@Notification.Remarks"></InputTextArea>
+                    <ValidationMessage For="@(() => Notification.Remarks)" />
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label>Descripción</label>
+                <div class="m-1">
+                    <InputText class="form-control" @bind-Value="@Notification.Description"/>
+                    <ValidationMessage For="@(() => Notification.Description)" />
+                </div>
+                <label>Fecha</label>
+                <div class ="m-1">
+                    <input type="date" class="form-control " @bind="Notification.Date" id="datePicker" />
+                    <ValidationMessage For="@(() => Notification.Date)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+    <script>
+        var datePicker = document.getElementById('datePicker');
+        var today = new Date().toISOString().split('T')[0];
+        datePicker.setAttribute('min', today);
+    </script>
+</EditForm>
+
+
+@code {
+    private EditContext editContext = null!;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Notification);
+        Notification.Date = DateTime.Now;
+    }
+
+    [EditorRequired]
+    [Parameter]
+    public Notification Notification { get; set; } = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formWasEdited = editContext.IsModified();
+
+        if (!formWasEdited)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirm = !string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

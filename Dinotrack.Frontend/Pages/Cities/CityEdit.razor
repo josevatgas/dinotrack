@@ -4,7 +4,6 @@
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-<hr />
 <h3>Editar Ciudad</h3>
 
 @if (city is null)
@@ -19,6 +18,9 @@ else
 @code {
     private City? city;
     private CityForm? cityForm;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
     [Parameter]
     public int CityId { get; set; }
@@ -48,7 +50,10 @@ else
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
+
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using Dinotrack.Shared.Responses;
+﻿using Dinotrack.Shared.Responses;
+using System.Text.Json;
 
 namespace Dinotrack.Backend.Services
 {

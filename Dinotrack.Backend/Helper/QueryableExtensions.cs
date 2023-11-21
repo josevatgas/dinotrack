@@ -11,5 +11,4 @@ namespace Dinotrack.Backend.Helper
                 .Take(pagination.RecordsNumber);
         }
     }
-
 }

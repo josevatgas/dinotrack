@@ -4,8 +4,8 @@
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-<hr/>
-<h3>Crear Taller</h3>
+
+<h3>Nuevo Taller</h3>
 
 <WorkshopForm @ref="workshopForm" Workshop="workshop" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
@@ -13,6 +13,10 @@
 @code {
     private Workshop workshop = new();
     private WorkshopForm? workshopForm;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
     private async Task CreateAsync()
     {
         var response = await repository.PostAsync("/api/workshops", workshop);
@@ -22,7 +26,10 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
+        
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

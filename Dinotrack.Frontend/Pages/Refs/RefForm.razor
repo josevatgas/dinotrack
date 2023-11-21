@@ -4,28 +4,63 @@
 
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
-    <div class="mb-3">
-        <label>Referencia</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Ref.Name" />
-            <ValidationMessage For="@(() => Ref.Name)" />
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <label>Referencia</label>
+                <div>
+                    <InputText class="form-control" @bind-Value="@RefDTO.Name" />
+                    <ValidationMessage For="@(() => RefDTO.Name)" />
+                </div>
+                <label>Descripción</label>
+                <div>
+                    <InputText class="form-control" @bind-Value="@RefDTO.Description" />
+                    <ValidationMessage For="@(() => RefDTO.Description)" />
+                </div>
+                <label>Referencia</label>
+                <div>
+                    <InputNumber class="form-control" @bind-Value="@RefDTO.Model" />
+                    <ValidationMessage For="@(() => RefDTO.Model)" />
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <div>
+                    <InputImg Label="Imagen" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                </div>
+            </div>
+            @if (IsEdit)
+            {
+                <div class="mb-3">
+                    <button type="button" class="btn btn-outline-primary" @onclick="AddImageAction"><i class="oi oi-plus" /> Agregar Imagenes</button>
+                    <button type="button" class="btn btn-outline-danger" @onclick="RemoveImageAction"><i class="oi oi-trash" /> Eliminar Imagen</button>
+                </div>
+            }
+
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Guardar</button>
     <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
 </EditForm>
 
+@if (IsEdit && RefDTO.RefImages is not null)
+{
+    <CarouselView Images="RefDTO.RefImages" />
+}
+
 @code {
     private EditContext editContext = null!;
+    private string? imageUrl;
 
-    protected override void OnInitialized()
-    {
-        editContext = new(Ref);
-    }
+
+    [Parameter]
+    public bool IsEdit { get; set; } = false;
 
     [EditorRequired]
     [Parameter]
-    public Ref Ref { get; set; } = null!;
+    public RefDTO RefDTO { get; set; } = null!;
+
 
     [EditorRequired]
     [Parameter]
@@ -35,7 +70,30 @@
     [Parameter]
     public EventCallback ReturnAction { get; set; }
 
+    [Parameter]
+    public EventCallback AddImageAction { get; set; }
+
+    [Parameter]
+    public EventCallback RemoveImageAction { get; set; }
+
     public bool FormPostedSuccessfully { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        editContext = new(RefDTO);
+        RefDTO.Model = DateTime.Now.Year;
+    }
+
+    private void ImageSelected(string imagenBase64)
+    {
+        if (RefDTO.RefImages is null)
+        {
+            RefDTO.RefImages = new List<String>();
+        }
+        RefDTO.RefImages!.Add(imagenBase64);
+        imageUrl = null;
+    }
 
     private async Task OnBeforeInternalNavigationAsync(LocationChangingContext context)
     {

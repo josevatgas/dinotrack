@@ -22,8 +22,7 @@ namespace Dinotrack.Backend.Controllers
             _context = context;
         }
 
-        [HttpGet] 
-
+        [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
             var queryable = _context.Brands
@@ -54,7 +53,6 @@ namespace Dinotrack.Backend.Controllers
             double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
             return Ok(totalPages);
         }
-
 
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)

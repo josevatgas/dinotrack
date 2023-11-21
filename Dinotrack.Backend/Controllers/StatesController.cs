@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Dinotrack.Backend.Interfaces;
-using Dinotrack.Shared.Entities;
-using Dinotrack.Backend.Data;
-using Microsoft.EntityFrameworkCore;
-using Dinotrack.Shared.DTOs;
+﻿using Dinotrack.Backend.Data;
 using Dinotrack.Backend.Helper;
+using Dinotrack.Backend.Interfaces;
+using Dinotrack.Shared.DTOs;
+using Dinotrack.Shared.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dinotrack.Backend.Controllers
 {
@@ -67,7 +67,6 @@ namespace Dinotrack.Backend.Controllers
             double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
             return Ok(totalPages);
         }
-
 
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)

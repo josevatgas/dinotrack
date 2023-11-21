@@ -4,15 +4,25 @@
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-<h6>Marca: @brand.Name</h6>
-<hr/>
-<h3>Crear Referencia</h3>
-
-<RefForm @ref="refForm" Ref="refe" OnValidSubmit="CreateAsync" ReturnAction="Return" />
-
+@if (loading)
+{
+    <Loading/>
+}
+else
+{
+    <h3>Crear Referencia</h3>
+    <RefForm @ref="refForm" RefDTO="refDTO" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+}
 @code {
-    private Ref refe = new();
+    private RefDTO refDTO = new RefDTO
+    {
+        RefImages = new List<String>()
+    };
     private RefForm? refForm;
+    private bool loading = true;
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
     [Parameter]
     public int BrandId { get; set; }
@@ -21,6 +31,7 @@
     protected override async Task OnInitializedAsync()
     {
         var response = await repository.GetAsync<Brand>($"/api/brands/{BrandId}");
+        loading = false;
         if (response.Error)
         {
             if (response.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -36,15 +47,19 @@
 
     private async Task CreateAsync()
     {
-        refe.BrandId = BrandId;
-        var response = await repository.PostAsync("/api/refs", refe);
+        refDTO.BrandId = BrandId;
+
+        var response = await repository.PostAsync("/api/refs/full", refDTO);
         if (response.Error)
         {
             var message = await response.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
+
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,

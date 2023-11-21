@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -104,7 +103,6 @@ namespace Dinotrack.Backend.Controllers
             return BadRequest(result.Errors.FirstOrDefault()!.Description);
         }
 
-
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> PutAsync(User user)
@@ -152,7 +150,6 @@ namespace Dinotrack.Backend.Controllers
             return Ok(await _userHelper.GetUserAsync(User.Identity!.Name!));
         }
 
-
         [HttpPost("CreateUser")]
         public async Task<ActionResult> CreateUserAsync([FromBody] UserDTO model)
         {
@@ -167,7 +164,7 @@ namespace Dinotrack.Backend.Controllers
             if (result.Succeeded)
             {
                 await _userHelper.AddUserToRoleAsync(user, user.UserType.ToString());
-                
+
                 var response = await SendConfirmationEmailAsync(user);
                 if (response.WasSuccess)
                 {
@@ -240,7 +237,6 @@ namespace Dinotrack.Backend.Controllers
             return BadRequest(response.Message);
         }
 
-
         private async Task<Response<string>> SendConfirmationEmailAsync(User user)
         {
             var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
@@ -288,5 +284,4 @@ namespace Dinotrack.Backend.Controllers
             };
         }
     }
-
 }

@@ -1,20 +1,81 @@
 ﻿@page "/"
-
-<PageTitle>DinoTrack</PageTitle>
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <p>Estas autenticado, @context.User.Identity?.Name</p>
-        <h1 class="display-1 text-center" >Hello, Dino!</h1>
-        <hr/>
-        Bienvenido a nuestra App de alertas para mantenimientos preventivos! 
-        <hr/> 
-        <div>
-            <p style="text-align:center;"><img src='https://i.postimg.cc/wx7WyX71/Dinotrack.gif' height="300" width="300" border='0' alt='Dinotrack' /></p>
-        </div>
     </Authorized>
     <NotAuthorized>
-        <p>No estas autorizado</p>
     </NotAuthorized>
 </AuthorizeView>
-   
-<SurveyPrompt Title="How is Blazor working for you?" />
+<MudCarousel Class="mud-width-full" Style="height:400px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+    <MudCarouselItem Transition="transition" Color="@Color.Primary">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="height:100%">
+            <MudImage src="https://i.postimg.cc/BnTCTvz9/home.jpg" style="width: 100%; height: auto;" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="transition" Color="@Color.Secondary">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="height:100%">
+            <MudImage src="https://i.postimg.cc/43wb0SZW/home2.jpg" style="width: 100%; height: auto;" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="height:100%">
+            <MudImage src="https://i.postimg.cc/cJdBXSqK/info.png" style="width: 100%; height: auto;" />
+        </div>
+    </MudCarouselItem>
+</MudCarousel>
+
+<figure class="text-center m-2">
+    <blockquote class="blockquote">
+        <p>Por un viaje seguro, DinoTrack en el camino.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+        Alertas preventivas <cite title="Título fuente">DinoTrack</cite>
+    </figcaption>
+</figure>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card m-4" style="width: 22rem;">
+            <img src="https://i.postimg.cc/cJdBXSqK/info.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Título de la tarjeta</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Subtítulo de la tarjeta</h6>
+                <br />
+                <p class="card-text">Un texto de ejemplo rápido para colocal cerca del título de la tarjeta y componer la mayor parte del contenido de la tarjeta.</p>
+                <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card m-4" style="width: 22rem;">
+            <img src="https://i.postimg.cc/cJdBXSqK/info.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Título de la tarjeta</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Subtítulo de la tarjeta</h6>
+                <br />
+                <p class="card-text">Un texto de ejemplo rápido para colocal cerca del título de la tarjeta y componer la mayor parte del contenido de la tarjeta.</p>
+                <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card m-4" style="width: 22rem;">
+            <img src="https://i.postimg.cc/cJdBXSqK/info.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Título de la tarjeta</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Subtítulo de la tarjeta</h6>
+                <br />
+                <p class="card-text">Un texto de ejemplo rápido para colocal cerca del título de la tarjeta y componer la mayor parte del contenido de la tarjeta.</p>
+                <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool arrows = false;
+    private bool bullets = false;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+}
+
+
