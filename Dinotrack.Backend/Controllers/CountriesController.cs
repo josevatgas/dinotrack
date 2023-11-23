@@ -15,10 +15,12 @@ namespace Dinotrack.Backend.Controllers
     [Route("api/[controller]")]
     public class CountriesController : GenericController<Country>
     {
+        private readonly IGenericUnitOfWork<Country> _unitOfWork;
         private readonly DataContext _context;
 
         public CountriesController(IGenericUnitOfWork<Country> unitOfWork, DataContext context) : base(unitOfWork, context)
         {
+            _unitOfWork = unitOfWork;
             _context = context;
         }
 
@@ -67,10 +69,7 @@ namespace Dinotrack.Backend.Controllers
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
-            var country = await _context.Countries
-                .Include(c => c.States!)
-                .ThenInclude(s => s.Cities)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var country = await _unitOfWork.GetCountryAsync(id);
             if (country == null)
             {
                 return NotFound();

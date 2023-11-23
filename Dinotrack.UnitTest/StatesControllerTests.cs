@@ -7,20 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Dinotrack.UnitTest.Controllers
+namespace Dinotrack.UnitTest
 {
     [TestClass]
-    public class CountriesControllerTests
+    public class StatesControllerTests
     {
         private readonly DbContextOptions<DataContext> _options;
-        private readonly Mock<IGenericUnitOfWork<Country>> _unitOfWorkMock;
+        private readonly Mock<IGenericUnitOfWork<State>> _unitOfWorkMock;
 
-        public CountriesControllerTests()
+        public StatesControllerTests()
         {
             _options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
-            _unitOfWorkMock = new Mock<IGenericUnitOfWork<Country>>();
+            _unitOfWorkMock = new Mock<IGenericUnitOfWork<State>>();
         }
 
         [TestMethod]
@@ -28,10 +28,11 @@ namespace Dinotrack.UnitTest.Controllers
         {
             // Arrange
             using var context = new DataContext(_options);
-            var controller = new CountriesController(_unitOfWorkMock.Object, context);
+            var controller = new StatesController(_unitOfWorkMock.Object, context);
+            var countryId = 1;
 
             // Act
-            var result = await controller.GetCombo() as OkObjectResult;
+            var result = await controller.GetCombo(countryId) as OkObjectResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -46,8 +47,8 @@ namespace Dinotrack.UnitTest.Controllers
         {
             // Arrange
             using var context = new DataContext(_options);
-            var controller = new CountriesController(_unitOfWorkMock.Object, context);
-            var pagination = new PaginationDTO { Filter = "some" };
+            var controller = new StatesController(_unitOfWorkMock.Object, context);
+            var pagination = new PaginationDTO { Id = 1, Filter = "Some" };
 
             // Act
             var result = await controller.GetAsync(pagination) as OkObjectResult;
@@ -65,8 +66,8 @@ namespace Dinotrack.UnitTest.Controllers
         {
             // Arrange
             using var context = new DataContext(_options);
-            var controller = new CountriesController(_unitOfWorkMock.Object, context);
-            var pagination = new PaginationDTO { Filter = "some" };
+            var controller = new StatesController(_unitOfWorkMock.Object, context);
+            var pagination = new PaginationDTO { Id = 1, Filter = "Some" };
 
             // Act
             var result = await controller.GetPagesAsync(pagination) as OkObjectResult;
@@ -80,11 +81,11 @@ namespace Dinotrack.UnitTest.Controllers
         }
 
         [TestMethod]
-        public async Task GetAsync_ReturnsNotFoundWhenCountryNotFound()
+        public async Task GetAsync_ReturnsNotFoundWhenStateNotFound()
         {
             // Arrange
             using var context = new DataContext(_options);
-            var controller = new CountriesController(_unitOfWorkMock.Object, context);
+            var controller = new StatesController(_unitOfWorkMock.Object, context);
 
             // Act
             var result = await controller.GetAsync(1) as NotFoundResult;
@@ -98,25 +99,24 @@ namespace Dinotrack.UnitTest.Controllers
         }
 
         [TestMethod]
-        public async Task GetAsync_ReturnsOkWhenCountryFound()
+        public async Task GetAsync_ReturnsOkWhenStateFound()
         {
             // Arrange
             using var context = new DataContext(_options);
-            var country = new Country { Id = 1, Name = "test" };
-            _unitOfWorkMock.Setup(x => x.GetCountryAsync(country.Id)).ReturnsAsync(country);
-            var controller = new CountriesController(_unitOfWorkMock.Object, context);
+            var state = new State { Id = 1, Name = "test" };
+            _unitOfWorkMock.Setup(x => x.GetStateAsync(state.Id)).ReturnsAsync(state);
+            var controller = new StatesController(_unitOfWorkMock.Object, context);
 
             // Act
-            var result = await controller.GetAsync(country.Id) as OkObjectResult;
+            var result = await controller.GetAsync(state.Id) as OkObjectResult;
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.StatusCode);
-            _unitOfWorkMock.Verify(x => x.GetCountryAsync(country.Id), Times.Once());
+            _unitOfWorkMock.Verify(x => x.GetStateAsync(state.Id), Times.Once());
 
             // Clean up (if needed)
             context.Database.EnsureDeleted();
         }
-
     }
 }

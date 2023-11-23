@@ -1,5 +1,6 @@
 ﻿using Dinotrack.Backend.Data;
 using Dinotrack.Backend.Interfaces;
+using Dinotrack.Shared.Entities;
 using Dinotrack.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -80,6 +81,24 @@ namespace Dinotrack.Backend.Repositories
                 return ExceptionResponse(exception);
             }
         }
+
+        public async Task<Country> GetCountryAsync(int id)
+        {
+            var country = await _context.Countries
+                    .Include(c => c.States!)
+                    .ThenInclude(s => s.Cities)
+                    .FirstOrDefaultAsync(c => c.Id == id);
+            return country!;
+        }
+
+        public async Task<State> GetStateAsync(int id)
+        {
+            var state = await _context.States
+                    .Include(s => s.Cities)
+                    .FirstOrDefaultAsync(c => c.Id == id);
+            return state!;
+        }
+
 
         private Response<T> ExceptionResponse(Exception exception)
         {
