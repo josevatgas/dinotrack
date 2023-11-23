@@ -23,7 +23,6 @@
                 <button type="button" class="btn btn-sm btn-outline-danger" @onclick="CleanFilterAsync"><i class="oi oi-ban" /> Limpiar</button>
             </div>
         </div>
-
         <GenericList MyList="notifications">
             <Body>
                 <Pagination CurrentPage="currentPage"
@@ -39,50 +38,129 @@
                         <option value="100">100</option>
                     </select>
                 </div>
+                <h4 class="alert-primary m-2">Alertas Programadas</h4>
                 <table class="table table-striped">
+                   
                     <thead>
                         <tr>
-                            <th>Tipo de Alerta</th>
-                            <th>Descripción</th>
-                            <th>Detalle</th>
-                            <th>Fecha programada</th>
-                            <th>Estado</th>
-                            <th>Opciones</th>
-                            
+                            <AuthorizeView Roles="Admin">
+                                <Authorized>
+
+                                    <th>Usuario</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
+                                </Authorized>
+                            </AuthorizeView>
+                            <AuthorizeView Roles="User">
+                                <Authorized>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th>Detalle</th>
+                                    <th>Fecha</th>
+                                    <th>Opciones</th>
+                                </Authorized>
+                            </AuthorizeView>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var notification in notifications!)
                         {
-                            <tr>
-                                <td>@notification.NotificationType</td>
-                                <td>@notification.Description</td>
-                                <td>@notification.Remarks</td>
-                                <td>@notification.Date</td>
-                                <td>@notification.NotificationState</td>
-                                <AuthorizeView Roles="Admin">
-                                    <Authorized>
-                                        <td>
-                                            <a class="btn btn-warning btn-sm" @onclick=@(() => EnviarNotificacion(notification))><i class="oi oi-task" /> Enviar</a>
-                                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(notification))><i class="oi oi-ban" /> Borrar</button>
-                                        </td>
-                                    </Authorized>
-                                </AuthorizeView>
-                                <AuthorizeView Roles="User">
-                                    <Authorized>
-                                        <td>
-                                            <a class="btn btn-warning btn-sm" @onclick=@(() => ShowModalAsync(notification.Id, true))><i class="oi oi-layers" /> Editar</a>
-                                            <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(notification))><i class="oi oi-ban" /> Borrar</button>
-                                        </td>
-                                    </Authorized>
-                                </AuthorizeView>
-                            </tr>
+                            @if (notification.NotificationState == NotificationStateEnum.Nueva)
+                            {
+                                <tr>
+                                    <AuthorizeView Roles="Admin">
+                                        <Authorized>
+
+                                            <td>@notification.UserId</td>
+                                            <td>@notification.NotificationType</td>
+                                            <td>@notification.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>@notification.NotificationState</td>
+                                            <td>
+                                                <a class="btn btn-warning btn-sm" @onclick=@(() => EnviarNotificacion(notification))><i class="oi oi-task" /> Enviar</a>
+                                                <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(notification))><i class="oi oi-ban" /> Borrar</button>
+                                            </td>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                    <AuthorizeView Roles="User">
+                                        <Authorized>
+                                            <td>@notification.NotificationType</td>
+                                            <td>@notification.Description</td>
+                                            <td>@notification.Remarks</td>
+                                            <td>@notification.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <a class="btn btn-warning btn-sm" @onclick=@(() => ShowModalAsync(notification.Id, true))><i class="oi oi-layers" /> Editar</a>
+                                                <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(notification))><i class="oi oi-ban" /> Borrar</button>
+                                            </td>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
+                <h4 class="alert-success m-2">Alertas Enviadas</h4>
+                <table class="table table-striped">   
+                    <thead>
+                        <tr>
+                            <AuthorizeView Roles="Admin">
+                                <Authorized>
 
+                                    <th>Usuario</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
+                                </Authorized>
+                            </AuthorizeView>
+                            <AuthorizeView Roles="User">
+                                <Authorized>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th>Detalle</th>
+                                    <th>Fecha</th>
+                                    <th>Opciones</th>
+                                </Authorized>
+                            </AuthorizeView>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var notification in notifications!)
+                        {
+                            @if (notification.NotificationState == NotificationStateEnum.Enviada)
+                            {
+                                <tr>
+                                    <AuthorizeView Roles="Admin">
+                                        <Authorized>
+
+                                            <td>@notification.UserId</td>
+                                            <td>@notification.NotificationType</td>
+                                            <td>@notification.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>@notification.NotificationState</td>
+                                            <td>
+                                                <a class="btn btn-warning btn-sm" @onclick=@(() => EnviarNotificacion(notification))><i class="oi oi-task" /> re-Enviar</a>
+                                                <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(notification))><i class="oi oi-ban" /> Borrar</button>
+                                            </td>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                    <AuthorizeView Roles="User">
+                                        <Authorized>
+                                            <td>@notification.NotificationType</td>
+                                            <td>@notification.Description</td>
+                                            <td>@notification.Remarks</td>
+                                            <td>@notification.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger" @onclick=@(() => DeleteAsync(notification))><i class="oi oi-ban" /> Borrar</button>
+                                            </td>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             </Body>
-
         </GenericList>
     </div>
 </div>
@@ -156,6 +234,16 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+        await LoadRecordsAsync();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 2000,
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Alerta enviada exitosamente");
+
     }
 
     private async Task SelectedPageAsync((int page, int recNum) parameters)

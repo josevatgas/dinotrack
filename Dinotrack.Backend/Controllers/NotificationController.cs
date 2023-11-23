@@ -86,7 +86,7 @@ namespace Dinotrack.Backend.Controllers
         [HttpPost("sendNotification")]
         public async Task<IActionResult> SendNotification(Notification notification)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == User.Identity!.Name);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == notification.UserId);
 
             if (user == null)
             {
@@ -96,11 +96,14 @@ namespace Dinotrack.Backend.Controllers
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
                 $"Notificación Dinotrack",
                 $"<h1>Dinotrack - Notificación Programada</h1>" +
-                $"<p>Esta es tu notificación:</p>" +
-                $"<b>Recuperar Contraseña</b>");
+                $"<p>Esta es tu notificación programada:{notification.Description}: {notification.Remarks} </p>" +
+                $"<b>Dinotrack informativo</b>");
 
             if (response.WasSuccess)
             {
+                notification.NotificationState = NotificationStateEnum.Enviada;
+                _context.Update(notification);
+                await _context.SaveChangesAsync();
                 return NoContent();
             }
 

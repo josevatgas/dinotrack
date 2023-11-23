@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dinotrack.Shared.Enums
+namespace Dinotrack.UnitTest
 {
-    public enum NotificationStateEnum
+    internal class CountriesControllerTests
     {
-        Nueva,
-        Enviada
     }
 }
