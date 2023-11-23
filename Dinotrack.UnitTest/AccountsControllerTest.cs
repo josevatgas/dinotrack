@@ -714,22 +714,22 @@ namespace Dinotrack.UnitTest
             _mockUserHelper.Verify(x => x.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
-        /*[TestMethod]
-        public async Task ResedToken_UserNotFound_ReturnsNotFound()
+        [TestMethod]
+        public async Task ResendToken_UserNotFound_ReturnsNotFound()
         {
             // Arrange
             var emailModel = new EmailDTO { Email = "test@example.com" };
 
             // Act
-            var result = await _controller.ResedTokenAsync(emailModel);
+            var result = await _controller.ResendToken(emailModel);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
             _mockUserHelper.Verify(x => x.GetUserAsync(emailModel.Email), Times.Once());
-        }*/
+        }
 
-        /*[TestMethod]
-        public async Task ResedToken_EmailSentSuccessfully_ReturnsNoContent()
+        [TestMethod]
+        public async Task ResendToken_EmailSentSuccessfully_ReturnsNoContent()
         {
             // Arrange
             var emailModel = new EmailDTO
@@ -749,17 +749,17 @@ namespace Dinotrack.UnitTest
                 .Returns(response);
 
             // Act
-            var result = await _controller.ResedTokenAsync(emailModel);
+            var result = await _controller.ResendToken(emailModel);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
             _mockUserHelper.Verify(x => x.GetUserAsync(emailModel.Email), Times.Once());
             _mockUserHelper.Verify(x => x.GenerateEmailConfirmationTokenAsync(user), Times.Once());
             _mockMailHelper.Verify(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
-        }*/
+        }
 
-       /* [TestMethod]
-        public async Task ResedToken_EmailFailedToSend_ReturnsBadRequest()
+        [TestMethod]
+        public async Task ResendToken_EmailFailedToSend_ReturnsBadRequest()
         {
             // Arrange
             var emailModel = new EmailDTO
@@ -779,14 +779,14 @@ namespace Dinotrack.UnitTest
                 .Returns(response);
 
             // Act
-            var result = await _controller.ResedTokenAsync(emailModel);
+            var result = await _controller.ResendToken(emailModel);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
             _mockUserHelper.Verify(x => x.GetUserAsync(emailModel.Email), Times.Once());
             _mockUserHelper.Verify(x => x.GenerateEmailConfirmationTokenAsync(user), Times.Once());
             _mockMailHelper.Verify(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
-        }*/
+        }
 
         [TestMethod]
         public async Task ChangePasswordAsync_InvalidChange_ReturnsBadRequest()
