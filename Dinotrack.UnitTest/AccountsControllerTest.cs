@@ -1,18 +1,17 @@
-﻿using System;
-using Dinotrack.Backend.Controllers;
+﻿using Dinotrack.Backend.Controllers;
 using Dinotrack.Backend.Helper;
 using Dinotrack.Shared.DTOs;
 using Dinotrack.Shared.Entities;
 using Dinotrack.Shared.Enums;
+using Dinotrack.Shared.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
+using Moq;
+using System.Security.Claims;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-using Dinotrack.Shared.Responses;
 
 namespace Dinotrack.UnitTest
 {
@@ -77,39 +76,39 @@ namespace Dinotrack.UnitTest
             _controller.ControllerContext.HttpContext = new DefaultHttpContext() { User = user };
         }
 
-      /*  [TestMethod]
-        public async Task GetAsync_ShouldReturnOk_WhenUsersAreFound()
-        {
-            // Arrange
-            var pagination = new PaginationDTO();
-            var response = new Response<IEnumerable<User>> { WasSuccess = true };
-            _mockUserHelper.Setup(x => x.GetAsync(pagination))
-                .ReturnsAsync(response);
+        /*  [TestMethod]
+          public async Task GetAsync_ShouldReturnOk_WhenUsersAreFound()
+          {
+              // Arrange
+              var pagination = new PaginationDTO();
+              var response = new Response<IEnumerable<User>> { WasSuccess = true };
+              _mockUserHelper.Setup(x => x.GetAsync(pagination))
+                  .ReturnsAsync(response);
 
-            // Act
-            var result = await _controller.GetAsync(pagination);
+              // Act
+              var result = await _controller.GetAsync(pagination);
 
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-            _mockUsersRepository.Verify(x => x.GetAsync(pagination), Times.Once());
-        }*/
+              // Assert
+              Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+              _mockUsersRepository.Verify(x => x.GetAsync(pagination), Times.Once());
+          }*/
 
-       /* [TestMethod]
-        public async Task GetAsync_ShouldReturnBadRequest_WhenUsersAreNotFound()
-        {
-            // Arrange
-            var pagination = new PaginationDTO();
-            var response = new Response<IEnumerable<User>> { WasSuccess = false };
-            _mockUsersRepository.Setup(x => x.GetAsync(pagination))
-                .ReturnsAsync(response);
+        /* [TestMethod]
+         public async Task GetAsync_ShouldReturnBadRequest_WhenUsersAreNotFound()
+         {
+             // Arrange
+             var pagination = new PaginationDTO();
+             var response = new Response<IEnumerable<User>> { WasSuccess = false };
+             _mockUsersRepository.Setup(x => x.GetAsync(pagination))
+                 .ReturnsAsync(response);
 
-            // Act
-            var result = await _controller.GetAsync(pagination);
+             // Act
+             var result = await _controller.GetAsync(pagination);
 
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-            _mockUsersRepository.Verify(x => x.GetAsync(pagination), Times.Once());
-        }*/
+             // Assert
+             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+             _mockUsersRepository.Verify(x => x.GetAsync(pagination), Times.Once());
+         }*/
 
         /*[TestMethod]
         public async Task GetPagesAsync_ShouldReturnOk_WhenTotalPagesAreSuccessfullyRetrieved()
@@ -131,25 +130,25 @@ namespace Dinotrack.UnitTest
             _mockUsersRepository.Verify(x => x.GetTotalPagesAsync(pagination), Times.Once());
         }*/
 
-       /* [TestMethod]
-        public async Task GetPagesAsync_ShouldReturnBadRequest_WhenUnableToRetrieveTotalPages()
-        {
-            // Arrange
-            var pagination = new PaginationDTO();
-            var response = new Response<int> { WasSuccess = false };
-            _mockUsersRepository.Setup(x => x.GetTotalPagesAsync(pagination))
-                .ReturnsAsync(response);
+        /* [TestMethod]
+         public async Task GetPagesAsync_ShouldReturnBadRequest_WhenUnableToRetrieveTotalPages()
+         {
+             // Arrange
+             var pagination = new PaginationDTO();
+             var response = new Response<int> { WasSuccess = false };
+             _mockUsersRepository.Setup(x => x.GetTotalPagesAsync(pagination))
+                 .ReturnsAsync(response);
 
-            // Act
-            var result = await _controller.GetPagesAsync(pagination);
+             // Act
+             var result = await _controller.GetPagesAsync(pagination);
 
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-            var badRequestResult = result as BadRequestResult;
-            Assert.IsNotNull(badRequestResult);
-            Assert.AreEqual(400, badRequestResult.StatusCode);
-            _mockUsersRepository.Verify(x => x.GetTotalPagesAsync(pagination), Times.Once());
-        }*/
+             // Assert
+             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+             var badRequestResult = result as BadRequestResult;
+             Assert.IsNotNull(badRequestResult);
+             Assert.AreEqual(400, badRequestResult.StatusCode);
+             _mockUsersRepository.Verify(x => x.GetTotalPagesAsync(pagination), Times.Once());
+         }*/
 
         [TestMethod]
         public async Task CreateUser_ShouldReturnNoContent_WhenUserIsCreatedSuccessfully()
@@ -758,35 +757,35 @@ namespace Dinotrack.UnitTest
             _mockMailHelper.Verify(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }*/
 
-       /* [TestMethod]
-        public async Task ResedToken_EmailFailedToSend_ReturnsBadRequest()
-        {
-            // Arrange
-            var emailModel = new EmailDTO
-            {
-                Email = "test@example.com"
-            };
-            var user = new User();
+        /* [TestMethod]
+         public async Task ResedToken_EmailFailedToSend_ReturnsBadRequest()
+         {
+             // Arrange
+             var emailModel = new EmailDTO
+             {
+                 Email = "test@example.com"
+             };
+             var user = new User();
 
-            _mockUserHelper.Setup(x => x.GetUserAsync(emailModel.Email))
-                .ReturnsAsync(user);
+             _mockUserHelper.Setup(x => x.GetUserAsync(emailModel.Email))
+                 .ReturnsAsync(user);
 
-            _mockUserHelper.Setup(x => x.GenerateEmailConfirmationTokenAsync(user))
-               .ReturnsAsync("GeneratedToken");
+             _mockUserHelper.Setup(x => x.GenerateEmailConfirmationTokenAsync(user))
+                .ReturnsAsync("GeneratedToken");
 
-            var response = new Response<string> { WasSuccess = false, Message = "Email sending failed" };
-            _mockMailHelper.Setup(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(response);
+             var response = new Response<string> { WasSuccess = false, Message = "Email sending failed" };
+             _mockMailHelper.Setup(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                 .Returns(response);
 
-            // Act
-            var result = await _controller.ResedTokenAsync(emailModel);
+             // Act
+             var result = await _controller.ResedTokenAsync(emailModel);
 
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
-            _mockUserHelper.Verify(x => x.GetUserAsync(emailModel.Email), Times.Once());
-            _mockUserHelper.Verify(x => x.GenerateEmailConfirmationTokenAsync(user), Times.Once());
-            _mockMailHelper.Verify(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
-        }*/
+             // Assert
+             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+             _mockUserHelper.Verify(x => x.GetUserAsync(emailModel.Email), Times.Once());
+             _mockUserHelper.Verify(x => x.GenerateEmailConfirmationTokenAsync(user), Times.Once());
+             _mockMailHelper.Verify(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+         }*/
 
         [TestMethod]
         public async Task ChangePasswordAsync_InvalidChange_ReturnsBadRequest()
