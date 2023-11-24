@@ -40,10 +40,9 @@ namespace Dinotrack.UnitTest
             // Arrange
             var user = new User();
             var message = "Invalid token";
-            var token = "token";
             var identityErrors = new List<IdentityError> { new IdentityError { Description = message } };
 
-            _mockUserHelper.Setup(x => x.GetUserAsync(It.IsAny<Guid>()))
+            _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(user);
             using var context = new DataContext(_options);
             var controller = new NotificationsController(_userHelperMock.Object, _unitOfWorkMock.Object, context, _mailHelperMock.Object);
