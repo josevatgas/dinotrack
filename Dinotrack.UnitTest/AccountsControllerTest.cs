@@ -1,4 +1,5 @@
 ﻿using Dinotrack.Backend.Controllers;
+using Dinotrack.Backend.Data;
 using Dinotrack.Backend.Helper;
 using Dinotrack.Shared.DTOs;
 using Dinotrack.Shared.Entities;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Security.Claims;
@@ -18,11 +20,13 @@ namespace Dinotrack.UnitTest
     [TestClass]
     public class AccountsControllerTests
     {
+        private DbContextOptions<DataContext> _options = null!;
         private Mock<IUserHelper> _mockUserHelper = null!;
         private Mock<IConfiguration> _mockConfiguration = null!;
         private Mock<IFileStorage> _mockFileStorage = null!;
         private Mock<IMailHelper> _mockMailHelper = null!;
         private AccountsController _controller = null!;
+        private DataContext _context= null!;
 
         private const string _container = "userphotos";
         private const string _string64base = "U29tZVZhbGlkQmFzZTY0U3RyaW5n";
@@ -30,11 +34,15 @@ namespace Dinotrack.UnitTest
         [TestInitialize]
         public void Initialize()
         {
+            _options = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
             _mockUserHelper = new Mock<IUserHelper>();
             _mockConfiguration = new Mock<IConfiguration>();
             _mockFileStorage = new Mock<IFileStorage>();
             _mockMailHelper = new Mock<IMailHelper>();
 
+            _context = new DataContext(_options);
             _mockConfiguration
                 .SetupGet(x => x["Url Frontend"])
                 .Returns("http://frontend-url.com");
@@ -51,7 +59,7 @@ namespace Dinotrack.UnitTest
                 _mockUserHelper.Object,
                 _mockConfiguration.Object,
                 _mockFileStorage.Object,
-                _mockMailHelper.Object)
+                _mockMailHelper.Object, _context)
             {
                 Url = mockUrlHelper.Object
             };
@@ -528,6 +536,41 @@ namespace Dinotrack.UnitTest
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
             Assert.IsNull(okResult.Value);
+        }
+
+        [TestMethod]
+        public async Task GetAllAsync_UserExists_ReturnsOkWithUser()
+        {
+            // Arrange
+            var user = new User();
+            var pagination = new PaginationDTO { Id = 1, Filter = "Some" };
+            _mockUserHelper.Setup(x => x.GetUserAsync(user.Email!)).ReturnsAsync(user);
+
+            // Act
+            var result = await _controller.GetAllAsync(pagination);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.IsInstanceOfType(result, typeof(ActionResult));
+        }
+
+
+        [TestMethod]
+        public async Task GetPagesAsync_ReturnsOkWithPages()
+        {
+            // Arrange
+            var user = new User();
+            var pagination = new PaginationDTO { Id = 1, Filter = "Some" };
+            _mockUserHelper.Setup(x => x.GetUserAsync("test@example.com")).ReturnsAsync(user);
+
+            // Act
+            var result = await _controller.GetPagesAsync(pagination);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(0.0,okResult.Value);
         }
 
         [TestMethod]
