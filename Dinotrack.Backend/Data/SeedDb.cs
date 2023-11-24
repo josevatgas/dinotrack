@@ -4,6 +4,7 @@ using Dinotrack.Shared.Entities;
 using Dinotrack.Shared.Enums;
 using Dinotrack.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace Dinotrack.Backend.Data
 {
@@ -147,6 +148,7 @@ namespace Dinotrack.Backend.Data
 
         private async Task AddRefAsync(string name, string description, int model, string brand, string image)
         {
+            string filePath;
             Ref refe = new()
             {
                 Name = name,
@@ -161,7 +163,16 @@ namespace Dinotrack.Backend.Data
                 refe.BrandId = brandName.Id;
             }
 
-            var filePath = $"{Environment.CurrentDirectory}\\Images\\Refs\\{image}";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+
+                filePath = $"{Environment.CurrentDirectory}\\Images\\Refs\\{image}";
+            }
+            else
+            {
+                filePath = $"{Environment.CurrentDirectory}/Images/Refs/{image}";
+            }
+
             var fileBytes = File.ReadAllBytes(filePath);
             var imagePath = await _fileStorage.SaveFileAsync(fileBytes, "jpg", "motorcycles");
             refe.RefImages!.Add(new RefImage { Image = imagePath });
@@ -171,6 +182,7 @@ namespace Dinotrack.Backend.Data
 
         private async Task<User> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address, string image, UserType userType)
         {
+            string filePath;
             var user = await _userHelper.GetUserAsync(email);
             if (user == null)
             {
@@ -180,7 +192,14 @@ namespace Dinotrack.Backend.Data
                     city = await _context.Cities.FirstOrDefaultAsync();
                 }
 
-                var filePath = $"{Environment.CurrentDirectory}\\Images\\users\\{image}";
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    filePath = $"{Environment.CurrentDirectory}\\Images\\users\\{image}";
+                }
+                else
+                {
+                    filePath = $"{Environment.CurrentDirectory}/Images/users/{image}";
+                }
                 var fileBytes = File.ReadAllBytes(filePath);
                 var imagePath = await _fileStorage.SaveFileAsync(fileBytes, "jpg", "users");
 

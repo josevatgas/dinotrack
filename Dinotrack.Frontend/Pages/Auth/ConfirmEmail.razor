@@ -34,7 +34,7 @@
         else
         {
             await sweetAlertService.FireAsync("Confirmación", "Gracias por confirmar su email, ahora puedes ingresar al sistema.", SweetAlertIcon.Info);
-            Modal.Show<Login>();
+            var modalReference = Modal.Show<Login>();
         }
     }
 }
