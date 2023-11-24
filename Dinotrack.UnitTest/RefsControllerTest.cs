@@ -1,18 +1,12 @@
-﻿using Azure;
-using Dinotrack.Backend.Controllers;
+﻿using Dinotrack.Backend.Controllers;
 using Dinotrack.Backend.Data;
 using Dinotrack.Backend.Helper;
 using Dinotrack.Backend.Interfaces;
 using Dinotrack.Shared.DTOs;
 using Dinotrack.Shared.Entities;
-using Dinotrack.Shared.Responses;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Security.Claims;
 
 
 namespace Dinotrack.UnitTest
@@ -26,7 +20,6 @@ namespace Dinotrack.UnitTest
         private readonly Mock<RefDTO> _refDTO;
         private readonly RefsController _controller;
         private readonly DataContext _context;
-        private readonly Mock<IGenericUnitOfWork<Brand>> _brandUnitOfWorkMock;
         private readonly string _container;
 
         public RefsControllerTest()
@@ -39,7 +32,6 @@ namespace Dinotrack.UnitTest
             _refDTO = new Mock<RefDTO>();
             _context = new DataContext(_options);
             _controller = new RefsController(_unitOfWorkMock.Object, _context, _fileStorage.Object);
-            _brandUnitOfWorkMock = new Mock<IGenericUnitOfWork<Brand>>();
             _container = "motorcycles";
         }
 
