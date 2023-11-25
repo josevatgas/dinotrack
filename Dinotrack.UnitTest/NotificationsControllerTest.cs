@@ -57,6 +57,53 @@ namespace Dinotrack.UnitTest
         }
 
         [TestMethod]
+        public async Task GetAsync_ReturnsOk()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = "123",
+                UserName = "testuser",
+                Email = "Some",
+                PhoneNumber = "123456789",
+                Document = "ABC123",
+                FirstName = "John",
+                LastName = "Doe",
+                Address = "123 Main St",
+                Photo = "base64encodedphoto",
+                UserType = UserType.Admin, 
+                City = new City
+                {
+                    Id = 1,
+                    Name = "CityName",
+                },
+                CityId = 1
+            };
+
+            SetupUser("Some");
+            var paginationDto = new PaginationDTO();
+            _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(), "12345"))
+                .ReturnsAsync(IdentityResult.Success);
+            _userHelperMock.Setup(x => x.AddUserToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+            _userHelperMock.Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
+                .ReturnsAsync("token");
+
+            _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _controller.GetAsync(paginationDto);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+
+        }
+
+        [TestMethod]
         public async Task GetAsync_ReturnsBadRequest()
         {
             // Arrange

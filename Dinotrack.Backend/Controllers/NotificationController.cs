@@ -4,7 +4,6 @@ using Dinotrack.Backend.Interfaces;
 using Dinotrack.Shared.DTOs;
 using Dinotrack.Shared.Entities;
 using Dinotrack.Shared.Enums;
-using Dinotrack.Shared.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
