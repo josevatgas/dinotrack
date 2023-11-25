@@ -14,6 +14,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,9 @@ namespace Dinotrack.UnitTest
         private readonly Mock<IMailHelper> _mailHelperMock;
         private readonly NotificationsController _controller = null!;
         private const string _string64base = "U29tZVZhbGlkQmFzZTY0U3RyaW5n";
+        private readonly DataContext _context;
         public NotificationsControllerTest()
+        
         {
             _options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -37,8 +40,8 @@ namespace Dinotrack.UnitTest
             _unitOfWorkMock = new Mock<IGenericUnitOfWork<Notification>>();
             _userHelperMock = new Mock<IUserHelper>();
             _mailHelperMock = new Mock<IMailHelper>();
-            var context = new DataContext(_options);
-            _controller = new NotificationsController(_userHelperMock.Object, _unitOfWorkMock.Object, context, _mailHelperMock.Object);
+            _context = new DataContext(_options);
+            _controller = new NotificationsController(_userHelperMock.Object, _unitOfWorkMock.Object, _context, _mailHelperMock.Object);
         }
 
         private void SetupUser(string username)
@@ -73,8 +76,7 @@ namespace Dinotrack.UnitTest
                 UserName = "Test",
                 UserType = UserType.User
             };
-            var user = new User();  
-            SetupUser("Some");
+            SetupUser("Some1");
             var notification = new Notification();
             var paginationDto = new PaginationDTO();
             _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(), userDTO.Password))
@@ -130,6 +132,73 @@ namespace Dinotrack.UnitTest
             context.Database.EnsureDeleted();
         }
 
-    
+        [TestMethod]
+        public async Task GetCountAsync_ReturnsOk()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = "123",
+                UserName = "testuser",
+                Email = "Some",
+                PhoneNumber = "123456789",
+                Document = "ABC123",
+                FirstName = "John",
+                LastName = "Doe",
+                Address = "123 Main St",
+                Photo = "base64encodedphoto",
+                UserType = UserType.Admin, // Cambia según el tipo de usuario que desees
+                City = new City
+                {
+                    Id = 1,
+                    Name = "CityName",
+                    // Otros atributos de la ciudad según sea necesario
+                },
+                CityId = 1
+            };
+            
+            SetupUser("Some");
+            var paginationDto = new PaginationDTO();
+            _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(),"12345"))
+                .ReturnsAsync(IdentityResult.Success);
+            _userHelperMock.Setup(x => x.AddUserToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+            _userHelperMock.Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
+                .ReturnsAsync("token");
+
+            var notification = new Notification
+            {
+                UserId = "123",
+                User = user,
+                Date = DateTime.Now,
+                NotificationType = NotificationTypeEnum.Compras,
+                Description = "Test Notification",
+                Remarks = "Detalles adicionales",
+                NotificationState = NotificationStateEnum.Nueva
+            };
+
+            var notificationList = new List<Notification>
+                {
+                    notification
+                };
+
+
+            _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+
+            _context.Users.Add(user);
+            _context.Notifications.AddRange(notificationList);
+            await _context.SaveChangesAsync();
+
+
+            // Act
+            var result = await _controller.GetCountAsync() as OkObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+        }
+
+
     }
 }

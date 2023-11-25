@@ -71,16 +71,18 @@ namespace Dinotrack.Backend.Controllers
         [HttpGet("count")]
         public async Task<ActionResult> GetCountAsync()
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == User.Identity!.Name);
-            if (user == null)
-            {
-                return BadRequest("User not valid.");
-            }
-            var queryable = _context.Notifications.AsQueryable()
-                .Where(x => x.UserId == user.Id);
-            int count = await queryable.CountAsync();
+            
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == User.Identity!.Name);
+                if (user == null)
+                {
+                    return BadRequest("User not valid.");
+                }
+                var queryable = _context.Notifications.AsQueryable()
+                    .Where(x => x.UserId == user.Id);
+                int count = await queryable.CountAsync();
 
-            return Ok(count);
+                return Ok(count);
+            
         }
 
         [HttpPost("sendNotification")]
