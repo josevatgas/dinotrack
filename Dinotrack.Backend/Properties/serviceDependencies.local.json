@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "storage1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/southcentralus/connectors/ConnectionStringsAzureStorage_4A706D880B",
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/dinotrackbackendstorage",
+      "type": "storage.azure",
+      "connectionId": "ConnectionStrings:AzureStorage",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/southcentralus/connectors/ConnectionStringsLocalConnection_541ED86031",
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/dinotrackserverdb/databases/Dinotrackbd",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:LocalConnection",
+      "dynamicId": null
+    }
+  }
+}

@@ -1,5 +1,6 @@
 ﻿@using Dinotrack.Frontend.Pages.Auth;
-@inject IRepository repository
+@inject IRepository repository;
+@inject AuthenticationStateProvider authenticationStateProvider;
 
 <AuthorizeView>
     <Authorized>
@@ -44,14 +45,20 @@
     protected async override Task OnParametersSetAsync()
     {
         var authenticationState = await authenticationStateTask;
+        var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = state.User;
         var claims = authenticationState.User.Claims.ToList();
         var photoClaim = claims.FirstOrDefault(x => x.Type == "Photo");
         if (photoClaim is not null)
         {
             photoUser = photoClaim.Value;
         }
-        var response = await repository.GetAsync<int>($"/api/notifications/count");
-        alertCount = response.Response;
+        if (user.Identity!.IsAuthenticated)
+        {
+            var response = await repository.GetAsync<int>($"/api/notifications/count");
+            alertCount = response.Response;
+        }
+        
     }
     private void ShowModalAsync()
     {

@@ -64,6 +64,89 @@ namespace Dinotrack.UnitTest
         }
 
         [TestMethod]
+        public async Task PostAsync_AddImage_ReturnsOkObjectResult()
+        {
+            _fileStorage.Setup(x => x.SaveFileAsync(It.IsAny<byte[]>(), ".jpg", _container))
+                .ReturnsAsync("photoUrl");
+            Ref refe = new Ref();
+            refe.Id = 1;
+            refe.Name = "name";
+            refe.Description = "description";
+            refe.Model = 2023;
+            var imgDTO = new ImageDTO
+            {
+                RefId = 1,
+                Images = new List<string> { "base64Image1", "base64Image2" }
+            };
+            _context.Refs.Add(refe);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _controller.PostAddImagesAsync(imgDTO);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            var okResult = (OkObjectResult)result;
+            Assert.IsInstanceOfType(okResult.Value, typeof(ImageDTO));
+            var returnedRefDTO = okResult.Value as ImageDTO;
+            Assert.AreEqual(imgDTO.RefId, returnedRefDTO!.RefId);
+        }
+
+        [TestMethod]
+        public async Task PostAsync_RemoveImage_ReturnNotFound()
+        {
+            _fileStorage.Setup(x => x.SaveFileAsync(It.IsAny<byte[]>(), ".jpg", _container))
+                .ReturnsAsync("photoUrl");
+            Ref refe = new Ref();
+            refe.Id = 1;
+            refe.Name = "name";
+            refe.Description = "description";
+            refe.Model = 2023;
+            var imgDTO = new ImageDTO();
+            
+            _context.Refs.Add(refe);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _controller.PostRemoveLastImageAsync(imgDTO);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task PostAsync_RemoveImage_ReturnsOkObjectResult()
+        {
+            //Arrange
+            _fileStorage.Setup(x => x.SaveFileAsync(It.IsAny<byte[]>(), ".jpg", _container))
+                .ReturnsAsync("photoUrl");
+            Ref refe = new Ref();
+            refe.Id = 1;
+            refe.Name = "name";
+            refe.Description = "description";
+            refe.Model = 2023;
+            var imgDTO = new ImageDTO
+            {
+                RefId = 1,
+                Images = new List<string> { "base64Image1", "base64Image2" }
+            };
+            _context.Refs.Add(refe);
+            await _context.SaveChangesAsync();
+            await _controller.PostAddImagesAsync(imgDTO);
+           
+            // Act
+            var result = await _controller.PostRemoveLastImageAsync(imgDTO);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            var okResult = (OkObjectResult)result;
+            Assert.IsInstanceOfType(okResult.Value, typeof(ImageDTO));
+            var returnedRefDTO = okResult.Value as ImageDTO;
+            Assert.AreEqual(imgDTO.RefId, returnedRefDTO!.RefId);
+        }
+
+
+        [TestMethod]
         public async Task PutFullAsync_Success_ReturnsOkObjectResult()
         {
             // Arrange

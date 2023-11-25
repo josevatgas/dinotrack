@@ -68,6 +68,7 @@ namespace Dinotrack.Backend.Controllers
             return Ok(totalPages);
         }
 
+        [AllowAnonymous]
         [HttpGet("count")]
         public async Task<ActionResult> GetCountAsync()
         {
