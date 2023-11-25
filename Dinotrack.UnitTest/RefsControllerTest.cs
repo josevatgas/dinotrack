@@ -102,7 +102,9 @@ namespace Dinotrack.UnitTest
             Assert.AreEqual(refDTO.Name, returnedRefDTO.Name);
         }
 
-        public async Task PutFullAsync_Failed_Badrequest()
+
+        [TestMethod]
+        public async Task PutFullAsync_Failure_Badrequest()
         {
             // Arrange
             _fileStorage.Setup(x => x.SaveFileAsync(It.IsAny<byte[]>(), ".jpg", _container))
