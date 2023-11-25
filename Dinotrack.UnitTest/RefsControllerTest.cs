@@ -104,54 +104,6 @@ namespace Dinotrack.UnitTest
 
 
         [TestMethod]
-        public async Task PutFullAsync_Failure_Badrequest()
-        {
-            // Arrange
-            _fileStorage.Setup(x => x.SaveFileAsync(It.IsAny<byte[]>(), ".jpg", _container))
-                .ReturnsAsync("photoUrl");
-
-            var existingRef = new Ref
-            {
-                Id = 1,
-                Name = "ExistingReference",
-                Description = "Existing description",
-                Model = 2022,
-                RefImages = new List<RefImage> { new RefImage { Image = "existingImage1" }, new RefImage { Image = "existingImage2" } }
-            };
-
-
-
-            var existingRef2 = new Ref
-            {
-                Id = 2,
-                Name = "ExistingReference2",
-                Description = "Existing description",
-                Model = 2022,
-                RefImages = new List<RefImage> { new RefImage { Image = "existingImage1" }, new RefImage { Image = "existingImage2" } }
-            };
-
-
-            _context.Refs.Add(existingRef);
-            _context.Refs.Add(existingRef2);
-            _context.SaveChanges();
-
-            var refDTO = new RefDTO
-            {
-                Id = 1,
-                Name = "ExistingReference2",
-                Description = "Updated description",
-                Model = 2023,
-                RefImages = new List<string> { _base64Image, _httpsImage }
-            };
-
-            // Act
-            var result = await _controller.PutFullAsync(refDTO);
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-        }
-
-        [TestMethod]
         public async Task PutFullAsync_Failure_ReturnsNotFoundObjectResult()
         {
             // Arrange

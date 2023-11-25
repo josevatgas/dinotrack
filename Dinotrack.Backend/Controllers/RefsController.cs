@@ -99,16 +99,7 @@ namespace Dinotrack.Backend.Controllers
                 _context.Add(newRef);
                 await _context.SaveChangesAsync();
                 return Ok(refDTO);
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
-                {
-                    return BadRequest("Ya existe una referencia con el mismo nombre.");
-                }
-
-                return BadRequest(dbUpdateException.Message);
-            }
+            }          
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
@@ -153,15 +144,7 @@ namespace Dinotrack.Backend.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(refDTO);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
-                {
-                    return BadRequest("Ya existe una referencia con el mismo nombre.");
-                }
-
-                return BadRequest(dbUpdateException.Message);
-            }
+            
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
