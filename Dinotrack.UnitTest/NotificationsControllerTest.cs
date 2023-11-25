@@ -381,7 +381,72 @@ namespace Dinotrack.UnitTest
             Assert.IsNotNull(result);
             Assert.AreEqual(404, result.StatusCode);
         }
+
+        [TestMethod]
+        public async Task SendNotification_BadRequest()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = "123",
+                UserName = "testuser",
+                Email = "Some",
+                PhoneNumber = "123456789",
+                Document = "ABC123",
+                FirstName = "John",
+                LastName = "Doe",
+                Address = "123 Main St",
+                Photo = "base64encodedphoto",
+                UserType = UserType.Admin, 
+                City = new City
+                {
+                    Id = 1,
+                    Name = "CityName",
+                },
+                CityId = 1
+            };
+
+            SetupUser("Some");
+            var paginationDto = new PaginationDTO();
+            _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(), "12345"))
+                .ReturnsAsync(IdentityResult.Success);
+            _userHelperMock.Setup(x => x.AddUserToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+            _userHelperMock.Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
+                .ReturnsAsync("token");
+
+            var notification = new Notification
+            {
+                UserId = "123",
+                User = user,
+                Date = DateTime.Now,
+                NotificationType = NotificationTypeEnum.Compras,
+                Description = "Test Notification",
+                Remarks = "Detalles adicionales",
+                NotificationState = NotificationStateEnum.Nueva
+            };
+
+
+            _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+            var response = new Shared.Responses.Response<string> { WasSuccess = false };
+
+            _mailHelperMock.Setup(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(response);
+
+            _context.Users.Add(user);
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _controller.SendNotification(notification) as BadRequestResult;
+
+
+            // Assert
+            Assert.IsNull(result);
+        }
     }
+
 
 
 
