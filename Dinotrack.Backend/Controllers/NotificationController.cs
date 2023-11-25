@@ -85,13 +85,13 @@ namespace Dinotrack.Backend.Controllers
         }
 
         [HttpPost("sendNotification")]
-        public async Task<IActionResult> SendNotification(Notification notification)
+        public async Task<ActionResult> SendNotification(Notification notification)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == notification.UserId);
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound("Not found");
             }
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,

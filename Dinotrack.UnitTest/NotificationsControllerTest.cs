@@ -6,6 +6,7 @@ using Dinotrack.Backend.Interfaces;
 using Dinotrack.Shared.DTOs;
 using Dinotrack.Shared.Entities;
 using Dinotrack.Shared.Enums;
+using Dinotrack.Shared.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -132,7 +133,6 @@ namespace Dinotrack.UnitTest
                 .Returns(Task.CompletedTask);
             _userHelperMock.Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
                 .ReturnsAsync("token");
-          
 
             // Act
             var result = await _controller.GetAsync(paginationDto);
@@ -246,6 +246,143 @@ namespace Dinotrack.UnitTest
             Assert.AreEqual(200, result.StatusCode);
         }
 
+        [TestMethod]
+        public async Task SendNotification_ReturnsNoContent()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = "123",
+                UserName = "testuser",
+                Email = "Some",
+                PhoneNumber = "123456789",
+                Document = "ABC123",
+                FirstName = "John",
+                LastName = "Doe",
+                Address = "123 Main St",
+                Photo = "base64encodedphoto",
+                UserType = UserType.Admin, // Cambia según el tipo de usuario que desees
+                City = new City
+                {
+                    Id = 1,
+                    Name = "CityName",
+                    // Otros atributos de la ciudad según sea necesario
+                },
+                CityId = 1
+            };
 
+            SetupUser("Some");
+            var paginationDto = new PaginationDTO();
+            _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(), "12345"))
+                .ReturnsAsync(IdentityResult.Success);
+            _userHelperMock.Setup(x => x.AddUserToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+            _userHelperMock.Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
+                .ReturnsAsync("token");
+
+            var notification = new Notification
+            {
+                UserId = "123",
+                User = user,
+                Date = DateTime.Now,
+                NotificationType = NotificationTypeEnum.Compras,
+                Description = "Test Notification",
+                Remarks = "Detalles adicionales",
+                NotificationState = NotificationStateEnum.Nueva
+            };
+
+            var notificationList = new List<Notification>
+                {
+                    notification
+                };
+
+
+            _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+            var response = new Shared.Responses.Response<string> { WasSuccess = true };
+            _mailHelperMock.Setup(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(response);
+
+            _context.Users.Add(user);
+            _context.Notifications.AddRange(notificationList);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _controller.SendNotification(notification) as NoContentResult;
+
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(204, result.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task SendNotification_ReturnsNotFound()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = "321",
+                UserName = "testuser",
+                Email = "Some",
+                PhoneNumber = "123456789",
+                Document = "ABC123",
+                FirstName = "John",
+                LastName = "Doe",
+                Address = "123 Main St",
+                Photo = "base64encodedphoto",
+                UserType = UserType.Admin, // Cambia según el tipo de usuario que desees
+                City = new City
+                {
+                    Id = 1,
+                    Name = "CityName",
+                    // Otros atributos de la ciudad según sea necesario
+                },
+                CityId = 1
+            };
+
+            SetupUser("Some");
+            var paginationDto = new PaginationDTO();
+            _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(), "12345"))
+                .ReturnsAsync(IdentityResult.Success);
+            _userHelperMock.Setup(x => x.AddUserToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+            _userHelperMock.Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
+                .ReturnsAsync("token");
+
+            var notification = new Notification
+            {
+                UserId = "124",
+                User = user,
+                Date = DateTime.Now,
+                NotificationType = NotificationTypeEnum.Compras,
+                Description = "Test Notification",
+                Remarks = "Detalles adicionales",
+                NotificationState = NotificationStateEnum.Nueva
+            };
+
+           
+
+
+            _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+            var response = new Shared.Responses.Response<string> { WasSuccess = true };
+            _mailHelperMock.Setup(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(response);
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _controller.SendNotification(notification) as NotFoundObjectResult;
+
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(404, result.StatusCode);
+        }
     }
+
+
+
 }
