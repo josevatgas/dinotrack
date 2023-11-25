@@ -4,7 +4,6 @@ using Dinotrack.Backend.Interfaces;
 using Dinotrack.Shared.DTOs;
 using Dinotrack.Shared.Entities;
 using Dinotrack.Shared.Enums;
-using Dinotrack.Shared.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -87,13 +86,13 @@ namespace Dinotrack.Backend.Controllers
         }
 
         [HttpPost("sendNotification")]
-        public async Task<IActionResult> SendNotification(Notification notification)
+        public async Task<ActionResult> SendNotification(Notification notification)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == notification.UserId);
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound("Not found");
             }
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
