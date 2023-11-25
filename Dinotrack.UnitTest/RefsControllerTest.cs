@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-
 namespace Dinotrack.UnitTest
 {
     [TestClass]
@@ -103,7 +102,7 @@ namespace Dinotrack.UnitTest
             refe.Description = "description";
             refe.Model = 2023;
             var imgDTO = new ImageDTO();
-            
+
             _context.Refs.Add(refe);
             await _context.SaveChangesAsync();
 
@@ -133,7 +132,7 @@ namespace Dinotrack.UnitTest
             _context.Refs.Add(refe);
             await _context.SaveChangesAsync();
             await _controller.PostAddImagesAsync(imgDTO);
-           
+
             // Act
             var result = await _controller.PostRemoveLastImageAsync(imgDTO);
 
@@ -144,7 +143,6 @@ namespace Dinotrack.UnitTest
             var returnedRefDTO = okResult.Value as ImageDTO;
             Assert.AreEqual(imgDTO.RefId, returnedRefDTO!.RefId);
         }
-
 
         [TestMethod]
         public async Task PutFullAsync_Success_ReturnsOkObjectResult()
@@ -184,7 +182,6 @@ namespace Dinotrack.UnitTest
             var returnedRefDTO = (RefDTO)okResult.Value!;
             Assert.AreEqual(refDTO.Name, returnedRefDTO.Name);
         }
-
 
         [TestMethod]
         public async Task PutFullAsync_Failure_ReturnsNotFoundObjectResult()

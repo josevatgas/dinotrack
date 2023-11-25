@@ -2,7 +2,6 @@
 using Dinotrack.Backend.Helper;
 using Dinotrack.Backend.Interfaces;
 using Dinotrack.Shared.DTOs;
-using Dinotrack.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

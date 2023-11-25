@@ -25,7 +25,7 @@ namespace Dinotrack.Backend.Controllers
         }
 
         [HttpGet]
-         public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
             var queryable = _context.Refs
                 .Include(r => r.RefImages)
@@ -42,7 +42,6 @@ namespace Dinotrack.Backend.Controllers
                 .Paginate(pagination)
                 .ToListAsync());
         }
-
 
         [HttpGet("totalPages")]
         public override async Task<ActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
@@ -78,7 +77,7 @@ namespace Dinotrack.Backend.Controllers
 
         [HttpPost("full")]
         public async Task<IActionResult> PostFullAsync(RefDTO refDTO)
-        {   
+        {
             try
             {
                 Ref newRef = new()
@@ -99,7 +98,7 @@ namespace Dinotrack.Backend.Controllers
                 _context.Add(newRef);
                 await _context.SaveChangesAsync();
                 return Ok(refDTO);
-            }          
+            }
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
@@ -116,9 +115,9 @@ namespace Dinotrack.Backend.Controllers
                 {
                     return NotFound();
                 }
-                               
-                refe.Name = refDTO.Name;    
-                refe.Description = refDTO.Description;  
+
+                refe.Name = refDTO.Name;
+                refe.Description = refDTO.Description;
                 refe.Model = refDTO.Model;
                 refe.RefImages = new List<RefImage>();
 
@@ -136,7 +135,7 @@ namespace Dinotrack.Backend.Controllers
                         {
                             photoRef = Convert.FromBase64String(refImage);
                         }
-                        refe.RefImages!.Add(new RefImage { Image = await _fileStorage.SaveFileAsync(photoRef, ".jpg", "motorcycles") });    
+                        refe.RefImages!.Add(new RefImage { Image = await _fileStorage.SaveFileAsync(photoRef, ".jpg", "motorcycles") });
                     }
                 }
 
@@ -144,7 +143,6 @@ namespace Dinotrack.Backend.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(refDTO);
             }
-            
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
@@ -206,6 +204,5 @@ namespace Dinotrack.Backend.Controllers
             imageDTO.Images = refe.RefImages.Select(x => x.Image).ToList();
             return Ok(imageDTO);
         }
-
     }
 }

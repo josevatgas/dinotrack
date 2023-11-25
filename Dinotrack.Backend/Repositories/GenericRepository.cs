@@ -99,7 +99,6 @@ namespace Dinotrack.Backend.Repositories
             return state!;
         }
 
-
         private Response<T> ExceptionResponse(Exception exception)
         {
             return new Response<T>

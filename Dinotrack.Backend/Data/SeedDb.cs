@@ -165,7 +165,6 @@ namespace Dinotrack.Backend.Data
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-
                 filePath = $"{Environment.CurrentDirectory}\\Images\\Refs\\{image}";
             }
             else

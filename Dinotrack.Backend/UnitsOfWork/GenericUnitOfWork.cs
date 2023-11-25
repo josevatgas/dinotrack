@@ -26,6 +26,5 @@ namespace Dinotrack.Backend.UnitsOfWork
         public async Task<Country> GetCountryAsync(int id) => await _repository.GetCountryAsync(id);
 
         public async Task<State> GetStateAsync(int id) => await _repository.GetStateAsync(id);
-
     }
 }

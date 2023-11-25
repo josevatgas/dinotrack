@@ -26,7 +26,7 @@ namespace Dinotrack.UnitTest
         private Mock<IFileStorage> _mockFileStorage = null!;
         private Mock<IMailHelper> _mockMailHelper = null!;
         private AccountsController _controller = null!;
-        private DataContext _context= null!;
+        private DataContext _context = null!;
 
         private const string _container = "userphotos";
         private const string _string64base = "U29tZVZhbGlkQmFzZTY0U3RyaW5n";
@@ -83,7 +83,6 @@ namespace Dinotrack.UnitTest
             }, "mock"));
             _controller.ControllerContext.HttpContext = new DefaultHttpContext() { User = user };
         }
-
 
         [TestMethod]
         public async Task CreateUser_ShouldReturnNoContent_WhenUserIsCreatedSuccessfully()
@@ -555,7 +554,6 @@ namespace Dinotrack.UnitTest
             Assert.IsInstanceOfType(result, typeof(ActionResult));
         }
 
-
         [TestMethod]
         public async Task GetPagesAsync_ReturnsOkWithPages()
         {
@@ -570,7 +568,7 @@ namespace Dinotrack.UnitTest
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(0.0,okResult.Value);
+            Assert.AreEqual(0.0, okResult.Value);
         }
 
         [TestMethod]
@@ -737,15 +735,15 @@ namespace Dinotrack.UnitTest
             };
             var user = new User();
 
-             _mockUserHelper.Setup(x => x.GetUserAsync(emailModel.Email))
-                 .ReturnsAsync(user);
+            _mockUserHelper.Setup(x => x.GetUserAsync(emailModel.Email))
+                .ReturnsAsync(user);
 
-             _mockUserHelper.Setup(x => x.GenerateEmailConfirmationTokenAsync(user))
-                .ReturnsAsync("GeneratedToken");
+            _mockUserHelper.Setup(x => x.GenerateEmailConfirmationTokenAsync(user))
+               .ReturnsAsync("GeneratedToken");
 
-             var response = new Response<string> { WasSuccess = false, Message = "Email sending failed" };
-             _mockMailHelper.Setup(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                 .Returns(response);
+            var response = new Response<string> { WasSuccess = false, Message = "Email sending failed" };
+            _mockMailHelper.Setup(x => x.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(response);
 
             // Act
             var result = await _controller.ResendToken(emailModel);

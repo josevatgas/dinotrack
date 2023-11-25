@@ -31,10 +31,9 @@ namespace Dinotrack.Backend.Controllers
             _configuration = configuration;
             _fileStorage = fileStorage;
             _mailHelper = mailHelper;
-            _context = context; 
+            _context = context;
             _container = "users";
         }
-
 
         [HttpGet("all")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -278,7 +277,6 @@ namespace Dinotrack.Backend.Controllers
 
             return BadRequest(response.Message);
         }
-
 
         private async Task<Response<string>> SendConfirmationEmailAsync(User user)
         {

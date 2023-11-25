@@ -18,6 +18,5 @@ namespace Dinotrack.Backend.Interfaces
         Task<Country> GetCountryAsync(int id);
 
         Task<State> GetStateAsync(int id);
-
     }
 }

@@ -25,7 +25,7 @@ namespace Dinotrack.Backend.Data
 
         public DbSet<Workshop> Workshops { get; set; }
 
-        public DbSet<Notification> Notifications { get; set; }  
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

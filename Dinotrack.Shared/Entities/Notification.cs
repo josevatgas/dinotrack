@@ -21,7 +21,6 @@ namespace Dinotrack.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public NotificationTypeEnum NotificationType { get; set; }
 
-        
         [Display(Name = "Descripción")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]

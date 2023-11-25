@@ -49,24 +49,25 @@
             </Authorized>
         </AuthorizeView>
         <div class="nav-item px-3">
-
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                        <span class="oi oi-bell" aria-hidden="true"></span> Alertas
+                    </NavLink>
+                </Authorized>
+            </AuthorizeView>
             @if (expandSubNav)
             {
+                
                 <AuthorizeView Roles="User">
                     <Authorized>
-                        <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
-                            <span class="oi oi-bell" aria-hidden="true"></span> Alertas
-                        </NavLink>
                         <NavLink class="nav-link" href="/notifications" style="padding-left:35px;">
-                            <span class="oi oi-clock" aria-hidden="true"></span>Alertas programadas
+                            <span class="oi oi-pulse" aria-hidden="true"></span>Alertas Programadas
                         </NavLink>
                     </Authorized>
                 </AuthorizeView>
                 <AuthorizeView Roles="Admin">
                     <Authorized>
-                        <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
-                            <span class="oi oi-bell" aria-hidden="true"></span> Alertas
-                        </NavLink>
                         <NavLink class="nav-link" href="/notifications" style="padding-left:35px;">
                             <span class="oi oi-pulse" aria-hidden="true"></span>Enviar Alertas
                         </NavLink>

@@ -1,24 +1,16 @@
-﻿using Azure;
-using Dinotrack.Backend.Controllers;
+﻿using Dinotrack.Backend.Controllers;
 using Dinotrack.Backend.Data;
 using Dinotrack.Backend.Helper;
 using Dinotrack.Backend.Interfaces;
 using Dinotrack.Shared.DTOs;
 using Dinotrack.Shared.Entities;
 using Dinotrack.Shared.Enums;
-using Dinotrack.Shared.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dinotrack.UnitTest
 {
@@ -32,8 +24,9 @@ namespace Dinotrack.UnitTest
         private readonly NotificationsController _controller = null!;
         private const string _string64base = "U29tZVZhbGlkQmFzZTY0U3RyaW5n";
         private readonly DataContext _context;
+
         public NotificationsControllerTest()
-        
+
         {
             _options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -72,7 +65,7 @@ namespace Dinotrack.UnitTest
                 LastName = "Doe",
                 Address = "123 Main St",
                 Photo = "base64encodedphoto",
-                UserType = UserType.Admin, 
+                UserType = UserType.Admin,
                 City = new City
                 {
                     Id = 1,
@@ -101,7 +94,6 @@ namespace Dinotrack.UnitTest
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-
         }
 
         [TestMethod]
@@ -139,7 +131,6 @@ namespace Dinotrack.UnitTest
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
-
         }
 
         [TestMethod]
@@ -203,10 +194,10 @@ namespace Dinotrack.UnitTest
                 },
                 CityId = 1
             };
-            
+
             SetupUser("Some");
             var paginationDto = new PaginationDTO();
-            _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(),"12345"))
+            _userHelperMock.Setup(x => x.AddUserAsync(It.IsAny<User>(), "12345"))
                 .ReturnsAsync(IdentityResult.Success);
             _userHelperMock.Setup(x => x.AddUserToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
@@ -229,14 +220,12 @@ namespace Dinotrack.UnitTest
                     notification
                 };
 
-
             _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
                 .ReturnsAsync(user);
 
             _context.Users.Add(user);
             _context.Notifications.AddRange(notificationList);
             await _context.SaveChangesAsync();
-
 
             // Act
             var result = await _controller.GetCountAsync() as OkObjectResult;
@@ -296,7 +285,6 @@ namespace Dinotrack.UnitTest
                     notification
                 };
 
-
             _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
                 .ReturnsAsync(user);
             var response = new Shared.Responses.Response<string> { WasSuccess = true };
@@ -309,7 +297,6 @@ namespace Dinotrack.UnitTest
 
             // Act
             var result = await _controller.SendNotification(notification) as NoContentResult;
-
 
             // Assert
             Assert.IsNotNull(result);
@@ -361,9 +348,6 @@ namespace Dinotrack.UnitTest
                 NotificationState = NotificationStateEnum.Nueva
             };
 
-           
-
-
             _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
                 .ReturnsAsync(user);
             var response = new Shared.Responses.Response<string> { WasSuccess = true };
@@ -375,7 +359,6 @@ namespace Dinotrack.UnitTest
 
             // Act
             var result = await _controller.SendNotification(notification) as NotFoundObjectResult;
-
 
             // Assert
             Assert.IsNotNull(result);
@@ -397,7 +380,7 @@ namespace Dinotrack.UnitTest
                 LastName = "Doe",
                 Address = "123 Main St",
                 Photo = "base64encodedphoto",
-                UserType = UserType.Admin, 
+                UserType = UserType.Admin,
                 City = new City
                 {
                     Id = 1,
@@ -426,7 +409,6 @@ namespace Dinotrack.UnitTest
                 NotificationState = NotificationStateEnum.Nueva
             };
 
-
             _userHelperMock.Setup(x => x.GetUserAsync(It.IsAny<string>()))
                 .ReturnsAsync(user);
             var response = new Shared.Responses.Response<string> { WasSuccess = false };
@@ -441,13 +423,8 @@ namespace Dinotrack.UnitTest
             // Act
             var result = await _controller.SendNotification(notification) as BadRequestResult;
 
-
             // Assert
             Assert.IsNull(result);
         }
     }
-
-
-
-
 }
