@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  proyecto: Dinotrack.Backend/Dinotrack.Backend.csproj
+  proyecto: Dinotrack.Backend/Dinotrack.Backend.API.csproj
 steps:
 - task: UseDotNet@2
   displayName: 'ASP.NET Core 7'
